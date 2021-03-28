@@ -1,9 +1,9 @@
 #include "App.h"
+#include "Instrumentator.h"
 
 wxIMPLEMENT_APP(App);
 
 App::App()
-    : mpFrameMain(nullptr)
 {
 }
 
@@ -13,11 +13,15 @@ App::~App()
 
 bool App::OnInit()
 {
-    if (!mpFrameMain)
+    PROFILE_BEGIN("App Init", "Profiling/Init.json");
+
     {
+        PROFILE_SCOPE("Create FrameMain");
         mpFrameMain = new FrameMain();
         mpFrameMain->Show();
     }
+
+    PROFILE_END();
     return true;
 }
 
