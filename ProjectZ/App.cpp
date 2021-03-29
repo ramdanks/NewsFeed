@@ -16,8 +16,8 @@ bool App::OnInit()
 {
     PROFILE_BEGIN("App Init", "Profiling/Init.json");
 
-    mpFrameMain = new FrameMain();
-    mpFrameMain->Show();
+    mFrameMain = new FrameMain();
+    mFrameMain->Show();
 
     PROFILE_END();
     return true;

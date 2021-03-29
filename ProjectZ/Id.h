@@ -1,0 +1,10 @@
+#pragma once
+enum Id
+{
+	ID_LOGIN_BTN,
+	ID_REGISTER_BTN,
+	ID_FORGOT_LINK,
+	ID_SIGNUP_LINK,
+
+	ID_LOGOUT_BTN,
+};

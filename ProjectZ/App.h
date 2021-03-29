@@ -13,5 +13,5 @@ public:
 	int OnExit() override;
 
 private:
-	FrameMain* mpFrameMain;
+	FrameMain* mFrameMain;
 };
