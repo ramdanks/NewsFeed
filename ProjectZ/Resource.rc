@@ -1,0 +1,2 @@
+IMG_LOGO RCDATA "asset\\logo.png"
+#include <wx/msw/wx.rc>
