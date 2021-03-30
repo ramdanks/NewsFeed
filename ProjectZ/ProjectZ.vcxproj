@@ -169,6 +169,7 @@
   <ItemGroup>
     <ClCompile Include="App.cpp" />
     <ClCompile Include="Dashboard.cpp" />
+    <ClCompile Include="DBRequest.cpp" />
     <ClCompile Include="Formatting.cpp" />
     <ClCompile Include="FrameMain.cpp" />
     <ClCompile Include="MD5.cpp" />
@@ -176,6 +177,7 @@
   <ItemGroup>
     <ClInclude Include="App.h" />
     <ClInclude Include="Dashboard.h" />
+    <ClInclude Include="DBRequest.h" />
     <ClInclude Include="Formatting.h" />
     <ClInclude Include="FrameMain.h" />
     <ClInclude Include="Id.h" />
