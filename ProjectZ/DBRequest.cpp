@@ -49,36 +49,24 @@ bool DBRequest::UserExist(const std::string& username)
 	}
 }
 
-DBReturn DBRequest::Login(const std::string& username, const std::string& password)
+bool DBRequest::Login(const std::string& username, const std::string& password)
 {
 	PROFILE_FUNC();
-	try
-	{
-		sprintf_s(sBuff, sizeof(sBuff), DB_LOGIN_CMD, username.c_str(), password.c_str());
-		pqxx::result res = Exec(sBuff);
-		return static_cast<DBReturn>(res[0][0].as<bool>());
-	}
-	catch (...)
-	{
-		return DBERR;
-	}
+	if (!sConnect) Init();
+	sprintf_s(sBuff, sizeof(sBuff), DB_LOGIN_CMD, username.c_str(), password.c_str());
+	pqxx::result res = Exec(sBuff);
+	return res[0][0].as<bool>();
 }
 
-DBReturn DBRequest::Signup(const std::string& username, const std::string& password, const std::string& email)
+bool DBRequest::Signup(const std::string& username, const std::string& password, const std::string& email)
 {
 	PROFILE_FUNC();
-	try
-	{
-		sprintf_s(sBuff, sizeof(sBuff), DB_SIGNUP_CMD, username.c_str(), password.c_str(), email.c_str());
-		pqxx::work work(*sConnect);
-		work.exec(sBuff);
-		work.commit();
-		return VALID;
-	}
-	catch (...)
-	{
-		return DBERR;
-	}
+	if (!sConnect) Init();
+	sprintf_s(sBuff, sizeof(sBuff), DB_SIGNUP_CMD, username.c_str(), password.c_str(), email.c_str());
+	pqxx::work work(*sConnect);
+	work.exec(sBuff);
+	work.commit();
+	return true;
 }
 
 pqxx::result DBRequest::Exec(const char* cmd)

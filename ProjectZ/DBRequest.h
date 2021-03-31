@@ -2,13 +2,6 @@
 #include <string>
 #include <pqxx/pqxx>
 
-enum DBReturn
-{
-	DBERR   = -1,
-	VALID   = 1,
-	NOVALID = 0,
-};
-
 class DBRequest
 {
 private:
@@ -20,8 +13,8 @@ public:
 	static bool Offline();
 
 	static bool UserExist(const std::string& username);
-	static DBReturn Login(const std::string& username, const std::string& password);
-	static DBReturn Signup(const std::string& username, const std::string& password, const std::string& email);
+	static bool Login(const std::string& username, const std::string& password);
+	static bool Signup(const std::string& username, const std::string& password, const std::string& email);
 
 private:
 	static pqxx::result Exec(const char* cmd);

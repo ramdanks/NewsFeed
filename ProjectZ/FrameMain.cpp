@@ -25,13 +25,10 @@ FrameMain::FrameMain(const wxString& title, const wxPoint& pos)
 {
 	PROFILE_SCOPE("Create Landing Page");
 	this->BuildGUI();
+	if (!DBRequest::Init())
 	{
-		PROFILE_SCOPE("Check Database Connection");
-		if (!DBRequest::Init())
-		{
-			mLog.Warn->SetLabel("Cannot connect to the database!");
-			mReg.Warn->SetLabel("Cannot connect to the database!");
-		}
+		wxBusyInfo info("Warning: Cannot communicate with the database!");
+		wxThread::This()->Sleep(2000);
 	}
 }
 
@@ -59,12 +56,12 @@ void FrameMain::BuildGUI()
 {
 	PROFILE_FUNC();
 
-	wxFont entryFont(12, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, "Calibri");
+	wxFont entryFont(12, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, "Roboto");
 
-	const wxColour uiFore = wxColour(240, 240, 240);
-	const wxColour uiBack = wxColour(50, 50, 50);
-	const wxColour entryFore = wxColour(240, 240, 240);
-	const wxColour entryBack = wxColour(30, 30, 30);
+	const wxColour uiFore = wxColour(230, 230, 230);
+	const wxColour uiBack = wxColour(40, 40, 40);
+	const wxColour entryFore = wxColour(250, 250, 250);
+	const wxColour entryBack = wxColour(25, 25, 25);
 
 	wxPanel* lPanel = new wxPanel(this, wxID_ANY);
 	wxPanel* rPanel = new wxPanel(this, wxID_ANY);
@@ -80,11 +77,6 @@ void FrameMain::BuildGUI()
 		link->SetHoverColour(wxColour(52, 180, 240));
 		link->SetVisitedColour(wxColour(255, 255, 255));
 	};
-
-	// set background and foreground color
-	SetTheme(lPanel, uiBack, uiFore);
-	SetTheme(rPanel, uiBack, uiFore);
-
 	auto CreateHeader = [](wxWindow* wnd) -> wxSizer*
 	{
 		// set logo and title
@@ -102,6 +94,13 @@ void FrameMain::BuildGUI()
 		return sizer;
 	};
 
+	// set background and foreground color
+	SetTheme(lPanel, uiBack, uiFore);
+	SetTheme(rPanel, uiBack, uiFore);
+	// create warning text
+	mReg.Warn = new wxStaticText(rPanel, wxID_ANY, "");
+	mLog.Warn = new wxStaticText(lPanel, wxID_ANY, "");
+
 	// Create Login Panel
 	{
 		auto* sizer0 = CreateHeader(lPanel);
@@ -116,9 +115,6 @@ void FrameMain::BuildGUI()
 		pctrl->SetFont(entryFont);
 		uctrl->SetHint("Username");
 		pctrl->SetHint("Password");
-
-		mLog.Warn = new wxStaticText(lPanel, wxID_ANY, "");
-		mLog.Warn->SetForegroundColour(wxColour(250, 50, 50));
 
 		auto* utext = new wxStaticText(lPanel, wxID_ANY, "Username");
 		auto* ptext = new wxStaticText(lPanel, wxID_ANY, "Password");
@@ -189,9 +185,6 @@ void FrameMain::BuildGUI()
 		pctrl->SetHint("Password");
 		cctrl->SetHint("Password");
 
-		mReg.Warn = new wxStaticText(rPanel, wxID_ANY, "");
-		mReg.Warn->SetForegroundColour(wxColour(250, 50, 50));
-
 		auto* utext = new wxStaticText(rPanel, wxID_ANY, "Username");
 		auto* etext = new wxStaticText(rPanel, wxID_ANY, "Email");
 		auto* ptext = new wxStaticText(rPanel, wxID_ANY, "Password");
@@ -246,6 +239,25 @@ void FrameMain::BuildGUI()
 	mNotebook->SetWindowStyle(wxAUI_NB_TOP | wxAUI_NB_TAB_FIXED_WIDTH);
 	mNotebook->AddPage(lPanel, "Log In");
 	mNotebook->AddPage(rPanel, "Sign Up");
+	mNotebook->SetBackgroundColour(wxColour(0, 0, 0));
+}
+
+void FrameMain::Warn(const wxString& msg, bool ok)
+{
+	static const wxColour GREEN = wxColour(70, 255, 70);
+	static const wxColour RED   = wxColour(255, 70, 70);
+	if (ok)
+	{
+		mReg.Warn->SetForegroundColour(GREEN);
+		mLog.Warn->SetForegroundColour(GREEN);
+	}
+	else
+	{
+		mReg.Warn->SetForegroundColour(RED);
+		mLog.Warn->SetForegroundColour(RED);
+	}
+	mLog.Warn->SetLabel(msg);
+	mReg.Warn->SetLabel(msg);
 }
 
 void FrameMain::OnClose(wxCloseEvent& event)
@@ -282,17 +294,20 @@ void FrameMain::OnLoginBtn(wxCommandEvent& event)
 		}
 		{
 			PROFILE_SCOPE("Server Authenthication");
-			DBReturn ret = DBRequest::Login(username, hashpass);
-			if (ret == DBERR)
-				throw wxString("Database error, please try again later");
-			else if (ret == NOVALID)
+			if (!DBRequest::Login(username, hashpass))
 				throw wxString("Wrong credential, try again!");
 		}
 	}
 	catch (wxString& msg)
 	{
 		PROFILE_END();
-		mLog.Warn->SetLabel(msg);
+		Warn(msg);
+		return;
+	}
+	catch (...)
+	{
+		PROFILE_END();
+		Warn("Database connection error!");
 		return;
 	}
 
@@ -356,18 +371,24 @@ void FrameMain::OnSignupBtn(wxCommandEvent& event)
 			PROFILE_SCOPE("Server Signup");
 			if (DBRequest::UserExist(username))
 				throw wxString("Oops, username already taken!");
-			if (DBRequest::Signup(username, hashpass, email) != VALID)
+			if (!DBRequest::Signup(username, hashpass, email))
 				throw wxString("Database couldn't register!");
 		}
 	}
 	catch (wxString& msg)
 	{
 		PROFILE_END();
-		mReg.Warn->SetLabel(msg);
+		Warn(msg);
+		return;
+	}
+	catch (...)
+	{
+		PROFILE_END();
+		Warn("Database connection error!");
 		return;
 	}
 	PROFILE_END();
-	mReg.Warn->SetLabel("Signup Complete!");
+	Warn("Signup Complete!", true);
 }
 
 void FrameMain::OnForgotLink(wxHyperlinkEvent& event)
@@ -397,6 +418,7 @@ void FrameMain::OnPageChanged(wxAuiNotebookEvent& event)
 	auto sel = mNotebook->GetSelection();
 	if (sel != wxNOT_FOUND)
 	{
+		Warn("");
 		if (sel == 0)
 		{
 			mMode = LOGIN;

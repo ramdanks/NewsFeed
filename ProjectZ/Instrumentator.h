@@ -134,7 +134,7 @@ private:
 #if PROFILE
     #define PROFILE_BEGIN(name, filepath) Instrumentor::Get().BeginSession(name, filepath) 
     #define PROFILE_END()                 Instrumentor::Get().EndSession()
-    #define PROFILE_SCOPE(name)           InstrumentationTimer timer##__LINE__(name)
+    #define PROFILE_SCOPE(name)           InstrumentationTimer timer(name)
     #define PROFILE_FUNC()                PROFILE_SCOPE(__FUNCSIG__)
 #else
     #define PROFILE_BEGIN(name, filepath)

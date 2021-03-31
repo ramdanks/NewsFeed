@@ -4,7 +4,7 @@
 #include <wx/aui/auibook.h>
 
 #define WND_LOGIN_SIZE    wxSize(330, 400)
-#define WND_SIGNUP_SIZE wxSize(330, 500)
+#define WND_SIGNUP_SIZE   wxSize(330, 500)
 
 class FrameMain : public wxFrame
 {
@@ -32,6 +32,7 @@ private:
 	};
 
 	void BuildGUI();
+	void Warn(const wxString& msg, bool ok = false);
 
 	void OnClose(wxCloseEvent& event);
 	void OnLoginBtn(wxCommandEvent& event);
