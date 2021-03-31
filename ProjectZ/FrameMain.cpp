@@ -196,7 +196,7 @@ void FrameMain::BuildGUI()
 		auto* etext = new wxStaticText(rPanel, wxID_ANY, "Email");
 		auto* ptext = new wxStaticText(rPanel, wxID_ANY, "Password");
 		auto* ctext = new wxStaticText(rPanel, wxID_ANY, "Confirm Password");
-		auto* abox = new wxCheckBox(rPanel, wxID_ANY, "I accept the terms and conditions");
+		mReg.Terms  = new wxCheckBox(rPanel, wxID_ANY, "I accept the terms and conditions");
 
 		auto* registerBtn = new wxButton(rPanel, ID_SIGNUP_BTN, "Create my Account", wxDefaultPosition, wxSize(GENERAL_LEN, 30));
 
@@ -226,7 +226,7 @@ void FrameMain::BuildGUI()
 		sizer->Add(ctext, 0, wxLEFT | wxRIGHT, 30);
 		sizer->Add(cctrl, 0, wxEXPAND | wxLEFT | wxRIGHT, 30);
 		sizer->AddSpacer(10);
-		sizer->Add(abox, 0, wxLEFT | wxRIGHT, 30);
+		sizer->Add(mReg.Terms, 0, wxLEFT | wxRIGHT, 30);
 		sizer->AddSpacer(15);
 		sizer->Add(registerBtn, 0, wxEXPAND | wxLEFT | wxRIGHT, 30);
 		sizer->AddSpacer(15);
@@ -274,7 +274,7 @@ void FrameMain::OnLoginBtn(wxCommandEvent& event)
 			username = user.ToStdString();
 		}
 		{
-			PROFILE_SCOPE("MD5 Hash");
+			PROFILE_SCOPE("Password Validation");
 			wxString pass = mLog.PassCtrl->GetLineText(0);
 			if (pass.empty())
 				throw wxString("Please insert your password!");
@@ -346,6 +346,11 @@ void FrameMain::OnSignupBtn(wxCommandEvent& event)
 			if (pass1 != pass2)
 				throw wxString("Password do not match!");
 			hashpass = md5(pass1.ToStdString());
+		}
+		{
+			PROFILE_SCOPE("Terms and Conditions Validation");
+			if (!mReg.Terms->GetValue())
+				throw wxString("Please accept the terms and conditions!");
 		}
 		{
 			PROFILE_SCOPE("Server Signup");

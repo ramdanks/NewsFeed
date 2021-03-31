@@ -83,6 +83,7 @@ DBReturn DBRequest::Signup(const std::string& username, const std::string& passw
 
 pqxx::result DBRequest::Exec(const char* cmd)
 {
+	PROFILE_FUNC();
 	if (Offline()) throw - 1;
 	pqxx::work work(*sConnect);
 	auto ret = work.exec(sBuff);

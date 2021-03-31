@@ -26,6 +26,7 @@ private:
 	};
 	struct RegisterCtrl
 	{
+		wxCheckBox* Terms;
 		wxStaticText* Warn;
 		wxTextCtrl* UserCtrl, *PassCtrl, *PassConfirmCtrl, *EmailCtrl;
 	};
