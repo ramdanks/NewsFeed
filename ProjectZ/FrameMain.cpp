@@ -28,7 +28,10 @@ FrameMain::FrameMain(const wxString& title, const wxPoint& pos)
 	{
 		PROFILE_SCOPE("Check Database Connection");
 		if (!DBRequest::Init())
-			mWarn->SetLabel("Cannot connect to database!");
+		{
+			mLog.Warn->SetLabel("Cannot connect to the database!");
+			mReg.Warn->SetLabel("Cannot connect to the database!");
+		}
 	}
 }
 
@@ -99,6 +102,7 @@ void FrameMain::BuildGUI()
 		return sizer;
 	};
 
+	// Create Login Panel
 	{
 		auto* sizer0 = CreateHeader(lPanel);
 		auto* sizer = new wxBoxSizer(wxVERTICAL);
@@ -113,8 +117,8 @@ void FrameMain::BuildGUI()
 		uctrl->SetHint("Username");
 		pctrl->SetHint("Password");
 
-		mWarn = new wxStaticText(lPanel, wxID_ANY, "");
-		mWarn->SetForegroundColour(wxColour(250, 50, 50));
+		mLog.Warn = new wxStaticText(lPanel, wxID_ANY, "");
+		mLog.Warn->SetForegroundColour(wxColour(250, 50, 50));
 
 		auto* utext = new wxStaticText(lPanel, wxID_ANY, "Username");
 		auto* ptext = new wxStaticText(lPanel, wxID_ANY, "Password");
@@ -141,7 +145,7 @@ void FrameMain::BuildGUI()
 		sizer->AddSpacer(25);
 		sizer->Add(sizer0, 0, wxCENTER | wxLEFT | wxRIGHT, 30);
 		sizer->AddSpacer(15);
-		sizer->Add(mWarn, 0, wxLEFT | wxRIGHT, 30);
+		sizer->Add(mLog.Warn, 0, wxLEFT | wxRIGHT, 30);
 		sizer->AddSpacer(8);
 		sizer->Add(utext, 0, wxLEFT | wxRIGHT, 30);
 		sizer->Add(uctrl, 0, wxEXPAND | wxLEFT | wxRIGHT, 30);
@@ -162,6 +166,7 @@ void FrameMain::BuildGUI()
 		mLog.UserCtrl = uctrl;
 		mLog.PassCtrl = pctrl;
 	}
+	// Create Signup Panel
 	{
 		auto* sizer0 = CreateHeader(rPanel);
 		auto* sizer = new wxBoxSizer(wxVERTICAL);
@@ -184,8 +189,8 @@ void FrameMain::BuildGUI()
 		pctrl->SetHint("Password");
 		cctrl->SetHint("Password");
 
-		mWarn = new wxStaticText(lPanel, wxID_ANY, "");
-		mWarn->SetForegroundColour(wxColour(250, 50, 50));
+		mReg.Warn = new wxStaticText(rPanel, wxID_ANY, "");
+		mReg.Warn->SetForegroundColour(wxColour(250, 50, 50));
 
 		auto* utext = new wxStaticText(rPanel, wxID_ANY, "Username");
 		auto* etext = new wxStaticText(rPanel, wxID_ANY, "Email");
@@ -207,7 +212,7 @@ void FrameMain::BuildGUI()
 		sizer->AddSpacer(25);
 		sizer->Add(sizer0, 0, wxCENTER | wxLEFT | wxRIGHT, 30);
 		sizer->AddSpacer(15);
-		sizer->Add(mWarn, 0, wxLEFT | wxRIGHT, 30);
+		sizer->Add(mReg.Warn, 0, wxLEFT | wxRIGHT, 30);
 		sizer->AddSpacer(8);
 		sizer->Add(utext, 0, wxLEFT | wxRIGHT, 30);
 		sizer->Add(uctrl, 0, wxEXPAND | wxLEFT | wxRIGHT, 30);
@@ -277,20 +282,23 @@ void FrameMain::OnLoginBtn(wxCommandEvent& event)
 		}
 		{
 			PROFILE_SCOPE("Server Authenthication");
-			if (!DBRequest::Login(username, hashpass));
+			DBReturn ret = DBRequest::Login(username, hashpass);
+			if (ret == DBERR)
+				throw wxString("Database error, please try again later");
+			else if (ret == NOVALID)
 				throw wxString("Wrong credential, try again!");
 		}
 	}
 	catch (wxString& msg)
 	{
 		PROFILE_END();
-		mWarn->SetLabel(msg);
+		mLog.Warn->SetLabel(msg);
 		return;
 	}
 
 	PROFILE_END();
 	
-	mWarn->SetLabel("");
+	mLog.Warn->SetLabel("");
 	this->Hide();
 	auto* dashboard = new Dashboard(this);
 	dashboard->Show();
@@ -299,8 +307,62 @@ void FrameMain::OnLoginBtn(wxCommandEvent& event)
 void FrameMain::OnSignupBtn(wxCommandEvent& event)
 {
 	PROFILE_BEGIN("Login", "Profiling/Register.json");
-	
+
+	std::string hashpass;
+	std::string username;
+	std::string email;
+	wxBusyCursor busy;
+
+	try
+	{
+		{
+			PROFILE_SCOPE("Username Validation");
+			static const wxRegEx keyword("^[a-zA-Z0-9]*$");
+			wxString user = mReg.UserCtrl->GetLineText(0);
+			if (user.empty())
+				throw wxString("Please insert your username!");
+			if (!keyword.Matches(user))
+				throw wxString("Incorrect username!");
+			username = user.ToStdString();
+		}
+		{
+			PROFILE_SCOPE("Email Validation");
+			static const wxRegEx keyword("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$");
+			wxString em = mReg.EmailCtrl->GetLineText(0);
+			if (em.empty())
+				throw wxString("Please insert your email!");
+			if (!keyword.Matches(em))
+				throw wxString("Please insert a valid email!");
+			email = em.ToStdString();
+		}
+		{
+			PROFILE_SCOPE("Password Validation");
+			wxString pass1 = mReg.PassCtrl->GetLineText(0);
+			wxString pass2 = mReg.PassConfirmCtrl->GetLineText(0);
+			if (pass1.empty())
+				throw wxString("Please insert your password!");
+			if (pass2.empty())
+				throw wxString("Please confirm your password!");
+			if (pass1 != pass2)
+				throw wxString("Password do not match!");
+			hashpass = md5(pass1.ToStdString());
+		}
+		{
+			PROFILE_SCOPE("Server Signup");
+			if (DBRequest::UserExist(username))
+				throw wxString("Oops, username already taken!");
+			if (DBRequest::Signup(username, hashpass, email) != VALID)
+				throw wxString("Database couldn't register!");
+		}
+	}
+	catch (wxString& msg)
+	{
+		PROFILE_END();
+		mReg.Warn->SetLabel(msg);
+		return;
+	}
 	PROFILE_END();
+	mReg.Warn->SetLabel("Signup Complete!");
 }
 
 void FrameMain::OnForgotLink(wxHyperlinkEvent& event)
@@ -310,16 +372,18 @@ void FrameMain::OnForgotLink(wxHyperlinkEvent& event)
 void FrameMain::OnSignupLink(wxHyperlinkEvent& event)
 {
 	this->Freeze();
-	mNotebook->ChangeSelection(1);
-	this->SetSize(WND_SIGNUP_SIZE);
+	mNotebook->SetSelection(1);
+	wxAuiNotebookEvent evt;
+	OnPageChanged(evt);
 	this->Thaw();
 }
 
 void FrameMain::OnLoginLink(wxHyperlinkEvent& event)
 {
 	this->Freeze();
-	mNotebook->ChangeSelection(0);
-	this->SetSize(WND_LOGIN_SIZE);
+	mNotebook->SetSelection(0);
+	wxAuiNotebookEvent evt;
+	OnPageChanged(evt);
 	this->Thaw();
 }
 

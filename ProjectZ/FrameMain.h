@@ -21,10 +21,12 @@ public:
 private:
 	struct LoginCtrl
 	{
+		wxStaticText* Warn;
 		wxTextCtrl* UserCtrl, *PassCtrl;
 	};
 	struct RegisterCtrl
 	{
+		wxStaticText* Warn;
 		wxTextCtrl* UserCtrl, *PassCtrl, *PassConfirmCtrl, *EmailCtrl;
 	};
 
@@ -43,7 +45,6 @@ private:
 	LoginCtrl mLog;
 	RegisterCtrl mReg;
 	LandingMode mMode;
-	wxStaticText* mWarn;
 
 	wxDECLARE_EVENT_TABLE();
 };
