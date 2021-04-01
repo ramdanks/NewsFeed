@@ -1,10 +1,12 @@
 #pragma once
 #include <wx/wx.h>
+#include <wx/combobox.h>
 #include <wx/hyperlink.h>
 #include <wx/aui/auibook.h>
+#include "DatePicker.h"
 
 #define WND_LOGIN_SIZE    wxSize(330, 400)
-#define WND_SIGNUP_SIZE   wxSize(330, 500)
+#define WND_SIGNUP_SIZE   wxSize(330, 555)
 
 class FrameMain : public wxFrame
 {
@@ -26,8 +28,10 @@ private:
 	};
 	struct RegisterCtrl
 	{
-		wxCheckBox* Terms;
+		wxString Date;
 		wxStaticText* Warn;
+		wxCheckBox* Terms;
+		wxButton* DobBtn;
 		wxTextCtrl* UserCtrl, *PassCtrl, *PassConfirmCtrl, *EmailCtrl;
 	};
 
@@ -37,6 +41,7 @@ private:
 	void OnClose(wxCloseEvent& event);
 	void OnLoginBtn(wxCommandEvent& event);
 	void OnSignupBtn(wxCommandEvent& event);
+	void OnDateBtn(wxCommandEvent& event);
 	void OnForgotLink(wxHyperlinkEvent& event);
 	void OnSignupLink(wxHyperlinkEvent& event);
 	void OnLoginLink(wxHyperlinkEvent& event);

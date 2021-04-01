@@ -58,11 +58,13 @@ bool DBRequest::Login(const std::string& username, const std::string& password)
 	return res[0][0].as<bool>();
 }
 
-bool DBRequest::Signup(const std::string& username, const std::string& password, const std::string& email)
+bool DBRequest::Signup(const std::string& username, const std::string& password,
+					   const std::string& email, const std::string& dob)
 {
 	PROFILE_FUNC();
 	if (!sConnect) Init();
-	sprintf_s(sBuff, sizeof(sBuff), DB_SIGNUP_CMD, username.c_str(), password.c_str(), email.c_str());
+	sprintf_s(sBuff, sizeof(sBuff), DB_SIGNUP_CMD, username.c_str(),
+			  password.c_str(), email.c_str(), dob.c_str());
 	pqxx::work work(*sConnect);
 	work.exec(sBuff);
 	work.commit();

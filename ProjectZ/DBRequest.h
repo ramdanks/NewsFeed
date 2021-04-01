@@ -14,7 +14,8 @@ public:
 
 	static bool UserExist(const std::string& username);
 	static bool Login(const std::string& username, const std::string& password);
-	static bool Signup(const std::string& username, const std::string& password, const std::string& email);
+	static bool Signup(const std::string& username, const std::string& password,
+					   const std::string& email, const std::string& dob);
 
 private:
 	static pqxx::result Exec(const char* cmd);
@@ -25,4 +26,4 @@ private:
 
 #define DB_USEREXIST_CMD  "SELECT EXISTS(SELECT FROM Account WHERE username='%s')"
 #define DB_LOGIN_CMD      "SELECT EXISTS(SELECT 1 FROM Account WHERE username='%s' and password='%s')"
-#define DB_SIGNUP_CMD     "INSERT INTO Account VALUES('%s', '%s', '%s')"
+#define DB_SIGNUP_CMD     "INSERT INTO Account VALUES('%s', '%s', '%s', to_date('%s', 'YYYY-MM-DD'))"

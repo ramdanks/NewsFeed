@@ -10,6 +10,7 @@
 wxBEGIN_EVENT_TABLE(FrameMain, wxFrame)
 EVT_BUTTON(ID_LOGIN_BTN, FrameMain::OnLoginBtn)
 EVT_BUTTON(ID_SIGNUP_BTN, FrameMain::OnSignupBtn)
+EVT_BUTTON(ID_DATE_BTN, FrameMain::OnDateBtn)
 EVT_HYPERLINK(ID_FORGOT_LINK, FrameMain::OnForgotLink)
 EVT_HYPERLINK(ID_SIGNUP_LINK, FrameMain::OnSignupLink)
 EVT_HYPERLINK(ID_LOGIN_LINK, FrameMain::OnLoginLink)
@@ -51,7 +52,9 @@ void FrameMain::Quit()
 	this->Destroy();
 }
 
-#define GENERAL_LEN 200
+#define ENTRY_WIDTH   200
+#define ENTRY_HEIGHT  25
+#define ENTRY_SIZE    wxSize(ENTRY_WIDTH, ENTRY_HEIGHT)
 void FrameMain::BuildGUI()
 {
 	PROFILE_FUNC();
@@ -106,8 +109,8 @@ void FrameMain::BuildGUI()
 		auto* sizer0 = CreateHeader(lPanel);
 		auto* sizer = new wxBoxSizer(wxVERTICAL);
 
-		auto* uctrl = new wxTextCtrl(lPanel, wxID_ANY, "", wxPoint(0, 0), wxSize(GENERAL_LEN, 22), wxBORDER_NONE);
-		auto* pctrl = new wxTextCtrl(lPanel, wxID_ANY, "", wxPoint(0, 0), wxSize(GENERAL_LEN, 22), wxBORDER_NONE | wxTE_PASSWORD);
+		auto* uctrl = new wxTextCtrl(lPanel, wxID_ANY, "", wxPoint(0, 0), ENTRY_SIZE, wxBORDER_NONE);
+		auto* pctrl = new wxTextCtrl(lPanel, wxID_ANY, "", wxPoint(0, 0), ENTRY_SIZE, wxBORDER_NONE | wxTE_PASSWORD);
 
 		SetTheme(uctrl, entryBack, entryFore);
 		SetTheme(pctrl, entryBack, entryFore);
@@ -120,7 +123,7 @@ void FrameMain::BuildGUI()
 		auto* ptext = new wxStaticText(lPanel, wxID_ANY, "Password");
 		auto* rbox = new wxCheckBox(lPanel, wxID_ANY, "Remember Me");
 
-		auto* loginBtn = new wxButton(lPanel, ID_LOGIN_BTN, "Log In", wxDefaultPosition, wxSize(GENERAL_LEN, 30));
+		auto* loginBtn = new wxButton(lPanel, ID_LOGIN_BTN, "Log In", wxDefaultPosition, wxSize(ENTRY_WIDTH, 30));
 
 		auto* nohaveText = new wxStaticText(lPanel, wxID_ANY, "Don't have an account?");
 		auto* signup = new wxGenericHyperlinkCtrl(lPanel, ID_SIGNUP_LINK, "Sign Up", "");
@@ -148,7 +151,7 @@ void FrameMain::BuildGUI()
 		sizer->AddSpacer(10);
 		sizer->Add(ptext, 0, wxLEFT | wxRIGHT, 30);
 		sizer->Add(pctrl, 0, wxEXPAND | wxLEFT | wxRIGHT, 30);
-		sizer->AddSpacer(10);
+		sizer->AddSpacer(15);
 		sizer->Add(sizer1, 0, wxEXPAND | wxLEFT | wxRIGHT, 30);
 		sizer->AddSpacer(15);
 		sizer->Add(loginBtn, 0, wxEXPAND | wxLEFT | wxRIGHT, 30);
@@ -167,15 +170,17 @@ void FrameMain::BuildGUI()
 		auto* sizer0 = CreateHeader(rPanel);
 		auto* sizer = new wxBoxSizer(wxVERTICAL);
 
-		auto* uctrl = new wxTextCtrl(rPanel, wxID_ANY, "", wxPoint(0, 0), wxSize(GENERAL_LEN, 22), wxBORDER_NONE);
-		auto* ectrl = new wxTextCtrl(rPanel, wxID_ANY, "", wxPoint(0, 0), wxSize(GENERAL_LEN, 22), wxBORDER_NONE);
-		auto* pctrl = new wxTextCtrl(rPanel, wxID_ANY, "", wxPoint(0, 0), wxSize(GENERAL_LEN, 22), wxBORDER_NONE | wxTE_PASSWORD);
-		auto* cctrl = new wxTextCtrl(rPanel, wxID_ANY, "", wxPoint(0, 0), wxSize(GENERAL_LEN, 22), wxBORDER_NONE | wxTE_PASSWORD);
+		auto* uctrl = new wxTextCtrl(rPanel, wxID_ANY, "", wxPoint(0, 0), ENTRY_SIZE, wxBORDER_NONE);
+		auto* ectrl = new wxTextCtrl(rPanel, wxID_ANY, "", wxPoint(0, 0), ENTRY_SIZE, wxBORDER_NONE);
+		auto* pctrl = new wxTextCtrl(rPanel, wxID_ANY, "", wxPoint(0, 0), ENTRY_SIZE, wxBORDER_NONE | wxTE_PASSWORD);
+		auto* cctrl = new wxTextCtrl(rPanel, wxID_ANY, "", wxPoint(0, 0), ENTRY_SIZE, wxBORDER_NONE | wxTE_PASSWORD);
+		mReg.DobBtn = new wxButton(rPanel, ID_DATE_BTN, "Date of Birth:", wxPoint(0, 0), ENTRY_SIZE);
 
 		SetTheme(uctrl, entryBack, entryFore);
 		SetTheme(ectrl, entryBack, entryFore);
 		SetTheme(pctrl, entryBack, entryFore);
 		SetTheme(cctrl, entryBack, entryFore);
+
 		uctrl->SetFont(entryFont);
 		ectrl->SetFont(entryFont);
 		pctrl->SetFont(entryFont);
@@ -189,9 +194,10 @@ void FrameMain::BuildGUI()
 		auto* etext = new wxStaticText(rPanel, wxID_ANY, "Email");
 		auto* ptext = new wxStaticText(rPanel, wxID_ANY, "Password");
 		auto* ctext = new wxStaticText(rPanel, wxID_ANY, "Confirm Password");
+		auto* dobtext = new wxStaticText(rPanel, wxID_ANY, "Date of Birth");
 		mReg.Terms  = new wxCheckBox(rPanel, wxID_ANY, "I accept the terms and conditions");
 
-		auto* registerBtn = new wxButton(rPanel, ID_SIGNUP_BTN, "Create my Account", wxDefaultPosition, wxSize(GENERAL_LEN, 30));
+		auto* registerBtn = new wxButton(rPanel, ID_SIGNUP_BTN, "Create my Account", wxPoint(0, 0), wxSize(ENTRY_WIDTH, 30));
 
 		auto* nohaveText = new wxStaticText(rPanel, wxID_ANY, "Already have an account?");
 		auto* signup = new wxGenericHyperlinkCtrl(rPanel, ID_LOGIN_LINK, "Log In", "");
@@ -219,6 +225,9 @@ void FrameMain::BuildGUI()
 		sizer->Add(ctext, 0, wxLEFT | wxRIGHT, 30);
 		sizer->Add(cctrl, 0, wxEXPAND | wxLEFT | wxRIGHT, 30);
 		sizer->AddSpacer(10);
+		sizer->Add(dobtext, 0, wxLEFT | wxRIGHT, 30);
+		sizer->Add(mReg.DobBtn, 0, wxEXPAND | wxLEFT | wxRIGHT, 30);
+		sizer->AddSpacer(15);
 		sizer->Add(mReg.Terms, 0, wxLEFT | wxRIGHT, 30);
 		sizer->AddSpacer(15);
 		sizer->Add(registerBtn, 0, wxEXPAND | wxLEFT | wxRIGHT, 30);
@@ -239,7 +248,6 @@ void FrameMain::BuildGUI()
 	mNotebook->SetWindowStyle(wxAUI_NB_TOP | wxAUI_NB_TAB_FIXED_WIDTH);
 	mNotebook->AddPage(lPanel, "Log In");
 	mNotebook->AddPage(rPanel, "Sign Up");
-	mNotebook->SetBackgroundColour(wxColour(0, 0, 0));
 }
 
 void FrameMain::Warn(const wxString& msg, bool ok)
@@ -326,6 +334,7 @@ void FrameMain::OnSignupBtn(wxCommandEvent& event)
 	std::string hashpass;
 	std::string username;
 	std::string email;
+	std::string date;
 	wxBusyCursor busy;
 
 	try
@@ -363,6 +372,12 @@ void FrameMain::OnSignupBtn(wxCommandEvent& event)
 			hashpass = md5(pass1.ToStdString());
 		}
 		{
+			PROFILE_SCOPE("DoB Validation");
+			if (mReg.Date.empty())
+				throw wxString("Please insert your date of birth!");
+			date = mReg.Date.ToStdString();
+		}
+		{
 			PROFILE_SCOPE("Terms and Conditions Validation");
 			if (!mReg.Terms->GetValue())
 				throw wxString("Please accept the terms and conditions!");
@@ -371,7 +386,7 @@ void FrameMain::OnSignupBtn(wxCommandEvent& event)
 			PROFILE_SCOPE("Server Signup");
 			if (DBRequest::UserExist(username))
 				throw wxString("Oops, username already taken!");
-			if (!DBRequest::Signup(username, hashpass, email))
+			if (!DBRequest::Signup(username, hashpass, email, date))
 				throw wxString("Database couldn't register!");
 		}
 	}
@@ -389,6 +404,17 @@ void FrameMain::OnSignupBtn(wxCommandEvent& event)
 	}
 	PROFILE_END();
 	Warn("Signup Complete!", true);
+}
+
+void FrameMain::OnDateBtn(wxCommandEvent& event)
+{
+	DatePicker dp(this);
+	if (dp.ShowModal() == wxID_OK)
+	{
+		auto date = dp.GetISODate();
+		mReg.DobBtn->SetLabel("Date of Birth:  " + date);
+		mReg.Date = dp.GetISODate();
+	}
 }
 
 void FrameMain::OnForgotLink(wxHyperlinkEvent& event)
