@@ -18,7 +18,6 @@ public:
 
 	LandingMode GetMode() const;
 	void SetMode(LandingMode mode);
-	void Quit();
 
 private:
 	struct LoginCtrl

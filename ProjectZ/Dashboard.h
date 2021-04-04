@@ -1,11 +1,10 @@
 #pragma once
-#include "FrameMain.h"
 #include <wx/wx.h>
 
 class Dashboard : public wxFrame
 {
 public:
-	Dashboard(FrameMain* parent);
+	Dashboard(wxWindow* parent);
 
 private:
 	void BuildGUI();
@@ -14,7 +13,7 @@ private:
 	void OnLogoutBtn(wxCommandEvent& event);
 
 private:
-	FrameMain* mParent;
+	wxWindow* mParent;
 
 	wxDECLARE_EVENT_TABLE();
 };

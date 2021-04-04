@@ -36,6 +36,9 @@
     <ClCompile Include="DatePicker.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SystemBar.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FrameMain.h">
@@ -63,6 +66,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DatePicker.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SystemBar.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

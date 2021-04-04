@@ -46,12 +46,6 @@ void FrameMain::SetMode(LandingMode mode)
 	this->Thaw();
 }
 
-void FrameMain::Quit()
-{
-	this->Hide();
-	this->Destroy();
-}
-
 #define ENTRY_WIDTH   200
 #define ENTRY_HEIGHT  25
 #define ENTRY_SIZE    wxSize(ENTRY_WIDTH, ENTRY_HEIGHT)
@@ -59,7 +53,7 @@ void FrameMain::BuildGUI()
 {
 	PROFILE_FUNC();
 
-	wxFont entryFont(12, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, "Roboto");
+	wxFont entryFont(14, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, "Calibri");
 
 	const wxColour uiFore = wxColour(230, 230, 230);
 	const wxColour uiBack = wxColour(40, 40, 40);
@@ -270,7 +264,8 @@ void FrameMain::Warn(const wxString& msg, bool ok)
 
 void FrameMain::OnClose(wxCloseEvent& event)
 {
-	Quit();
+	this->Hide();
+	this->Destroy();
 }
 
 void FrameMain::OnLoginBtn(wxCommandEvent& event)

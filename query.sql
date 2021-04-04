@@ -1,0 +1,66 @@
+
+CREATE TABLE Account (
+	username CHAR(20) PRIMARY KEY,
+	password CHAR(32) NOT NULL,
+	email CHAR(50) NOT NULL,
+	dob DATE NOT NULL,
+	messageQuota INT NOT NULL DEFAULT 100,
+	createTime TIMESTAMP NOT NULL DEFAULT NOW()::TIMESTAMP
+);
+
+CREATE TABLE FriendRequest (
+	id SERIAL PRIMARY KEY,
+	sender CHAR(20) NOT NULL REFERENCES Account(username),
+	receiver CHAR(20) NOT NULL REFERENCES Account(username),
+	logTime TIMESTAMP NOT NULL DEFAULT NOW()::TIMESTAMP
+);
+
+CREATE TABLE Team (
+	id SERIAL PRIMARY KEY,
+	name CHAR(100)  NOT NULL,
+	admin CHAR(20) NOT NULL,
+	memberQuota SMALLINT NOT NULL DEFAULT 50,
+	createTime TIMESTAMP NOT NULL DEFAULT NOW()::TIMESTAMP,
+	
+	CONSTRAINT ownerName
+    FOREIGN KEY (admin) 
+    REFERENCES Account (username)
+);
+
+CREATE TABLE TeamRequest (
+	id SERIAL PRIMARY KEY,
+	sender INT NOT NULL REFERENCES Team(id),
+	receiver CHAR(20) NOT NULL REFERENCES Account(username),
+	logTime TIMESTAMP NOT NULL DEFAULT NOW()::TIMESTAMP
+);
+
+CREATE TABLE Chat (
+	id SERIAL PRIMARY KEY,
+	sender CHAR(20) NOT NULL REFERENCES Account (username),
+	receiver CHAR(20) NOT NULL REFERENCES Account (username),
+	message CHAR(100) NOT NULL,
+	arriveTime TIMESTAMP NOT NULL DEFAULT NOW()::TIMESTAMP
+);
+
+CREATE TABLE TeamChat (
+	id SERIAL PRIMARY KEY,
+	sender CHAR(20) NOT NULL REFERENCES Account (username),
+	receiver INT NOT NULL REFERENCES Team (id),
+	message CHAR(100) NOT NULL,
+	arriveTime TIMESTAMP NOT NULL DEFAULT NOW()::TIMESTAMP
+);
+
+CREATE TABLE TeamMember (
+	id SERIAL PRIMARY KEY,
+	username CHAR(20) NOT NULL REFERENCES Account (username),
+	Team INT NOT NULL REFERENCES Team (id),
+	joinTime TIMESTAMP NOT NULL DEFAULT NOW()::TIMESTAMP
+);
+
+CREATE TYPE Service AS ENUM ('Message', 'Team', 'happy');
+
+CREATE TABLE Billing (
+	id SERIAL PRIMARY KEY,
+	buyer CHAR(20) NOT NULL REFERENCES Account (username),
+	logTime TIMESTAMP NOT NULL DEFAULT NOW()::TIMESTAMP,
+);
