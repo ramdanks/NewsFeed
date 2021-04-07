@@ -6,6 +6,7 @@
 #include "DBRequest.h"
 #include <wx/regex.h>
 #include <wx/busyinfo.h>
+#include "Theme.h"
 
 wxBEGIN_EVENT_TABLE(FrameMain, wxFrame)
 EVT_BUTTON(ID_LOGIN_BTN, FrameMain::OnLoginBtn)
@@ -17,6 +18,10 @@ EVT_HYPERLINK(ID_LOGIN_LINK, FrameMain::OnLoginLink)
 EVT_AUINOTEBOOK_PAGE_CHANGED(ID_NOTEBOOK_LANDING, FrameMain::OnPageChanged)
 EVT_CLOSE(FrameMain::OnClose)
 wxEND_EVENT_TABLE()
+
+#define ENTRY_WIDTH   200
+#define ENTRY_HEIGHT  25
+#define ENTRY_SIZE    wxSize(ENTRY_WIDTH, ENTRY_HEIGHT)
 
 constexpr long frameStyle = wxMINIMIZE_BOX | wxCLOSE_BOX | wxCAPTION | wxSYSTEM_MENU;
 
@@ -47,42 +52,19 @@ void FrameMain::SetMode(LandingMode mode)
 	this->Thaw();
 }
 
-#define ENTRY_WIDTH   200
-#define ENTRY_HEIGHT  25
-#define ENTRY_SIZE    wxSize(ENTRY_WIDTH, ENTRY_HEIGHT)
 void FrameMain::BuildGUI()
 {
 	PROFILE_FUNC();
 
-	wxFont entryFont(14, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, "Calibri");
-
-	const wxColour uiFore = wxColour(230, 230, 230);
-	const wxColour uiBack = wxColour(40, 40, 40);
-	const wxColour entryFore = wxColour(250, 250, 250);
-	const wxColour entryBack = wxColour(25, 25, 25);
-
 	wxPanel* lPanel = new wxPanel(this, wxID_ANY);
 	wxPanel* rPanel = new wxPanel(this, wxID_ANY);
 
-	auto SetTheme = [](wxWindow* wnd, const wxColour& back, const wxColour& fore)
-	{
-		wnd->SetBackgroundColour(back);
-		wnd->SetForegroundColour(fore);
-	};
-	auto SetHyperlinkColour = [](wxGenericHyperlinkCtrl* link)
-	{
-		link->SetNormalColour(wxColour(255, 255, 255));
-		link->SetHoverColour(wxColour(52, 180, 240));
-		link->SetVisitedColour(wxColour(255, 255, 255));
-	};
 	auto CreateHeader = [](wxWindow* wnd) -> wxSizer*
 	{
 		// set logo and title
 		auto* myLogo = new wxStaticBitmap(wnd, wxID_ANY, wxBITMAP_PNG(IMG_LOGO));
 		auto* myName = new wxStaticText(wnd, wxID_ANY, "Newsfeed");
-		auto myFont = myName->GetFont();
-		myFont.SetPointSize(20);
-		myName->SetFont(myFont);
+		myName->SetFont(FONT_TITLE);
 
 		// add to sizer0
 		auto* sizer = new wxBoxSizer(wxHORIZONTAL);
@@ -92,8 +74,8 @@ void FrameMain::BuildGUI()
 	};
 
 	// set background and foreground color
-	SetTheme(lPanel, uiBack, uiFore);
-	SetTheme(rPanel, uiBack, uiFore);
+	Theme::SetWindow(lPanel, CLR_LANDING_BACK, CLR_LANDING_FORE);
+	Theme::SetWindow(rPanel, CLR_LANDING_BACK, CLR_LANDING_FORE);
 	// create warning text
 	mReg.Warn = new wxStaticText(rPanel, wxID_ANY, "");
 	mLog.Warn = new wxStaticText(lPanel, wxID_ANY, "");
@@ -106,10 +88,11 @@ void FrameMain::BuildGUI()
 		auto* uctrl = new wxTextCtrl(lPanel, wxID_ANY, "", wxPoint(0, 0), ENTRY_SIZE, wxBORDER_NONE);
 		auto* pctrl = new wxTextCtrl(lPanel, wxID_ANY, "", wxPoint(0, 0), ENTRY_SIZE, wxBORDER_NONE | wxTE_PASSWORD);
 
-		SetTheme(uctrl, entryBack, entryFore);
-		SetTheme(pctrl, entryBack, entryFore);
-		uctrl->SetFont(entryFont);
-		pctrl->SetFont(entryFont);
+		Theme::SetWindow(uctrl, CLR_ENTRY_BACK, CLR_ENTRY_FORE);
+		Theme::SetWindow(pctrl, CLR_ENTRY_BACK, CLR_ENTRY_FORE);
+
+		uctrl->SetFont(FONT_ENTRY);
+		pctrl->SetFont(FONT_ENTRY);
 		uctrl->SetHint("Username");
 		pctrl->SetHint("Password");
 
@@ -123,8 +106,8 @@ void FrameMain::BuildGUI()
 		auto* signup = new wxGenericHyperlinkCtrl(lPanel, ID_SIGNUP_LINK, "Sign Up", "");
 		auto* forgot = new wxGenericHyperlinkCtrl(lPanel, ID_FORGOT_LINK, "Forgot Password?", "");
 
-		SetHyperlinkColour(signup);
-		SetHyperlinkColour(forgot);
+		Theme::SetHyperlink(signup);
+		Theme::SetHyperlink(forgot);
 
 		auto* sizer1 = new wxBoxSizer(wxHORIZONTAL);
 		sizer1->Add(rbox, 0, wxRIGHT, 30);
@@ -170,15 +153,15 @@ void FrameMain::BuildGUI()
 		auto* cctrl = new wxTextCtrl(rPanel, wxID_ANY, "", wxPoint(0, 0), ENTRY_SIZE, wxBORDER_NONE | wxTE_PASSWORD);
 		mReg.DobBtn = new wxButton(rPanel, ID_DATE_BTN, "Date of Birth:", wxPoint(0, 0), ENTRY_SIZE);
 
-		SetTheme(uctrl, entryBack, entryFore);
-		SetTheme(ectrl, entryBack, entryFore);
-		SetTheme(pctrl, entryBack, entryFore);
-		SetTheme(cctrl, entryBack, entryFore);
+		Theme::SetWindow(uctrl, CLR_ENTRY_BACK, CLR_ENTRY_FORE);
+		Theme::SetWindow(ectrl, CLR_ENTRY_BACK, CLR_ENTRY_FORE);
+		Theme::SetWindow(pctrl, CLR_ENTRY_BACK, CLR_ENTRY_FORE);
+		Theme::SetWindow(cctrl, CLR_ENTRY_BACK, CLR_ENTRY_FORE);
 
-		uctrl->SetFont(entryFont);
-		ectrl->SetFont(entryFont);
-		pctrl->SetFont(entryFont);
-		cctrl->SetFont(entryFont);
+		uctrl->SetFont(FONT_ENTRY);
+		ectrl->SetFont(FONT_ENTRY);
+		pctrl->SetFont(FONT_ENTRY);
+		cctrl->SetFont(FONT_ENTRY);
 		uctrl->SetHint("Username");
 		ectrl->SetHint("Email");
 		pctrl->SetHint("Password");
@@ -196,7 +179,7 @@ void FrameMain::BuildGUI()
 		auto* nohaveText = new wxStaticText(rPanel, wxID_ANY, "Already have an account?");
 		auto* signup = new wxGenericHyperlinkCtrl(rPanel, ID_LOGIN_LINK, "Log In", "");
 
-		SetHyperlinkColour(signup);
+		Theme::SetHyperlink(signup);
 
 		auto* sizer2 = new wxBoxSizer(wxHORIZONTAL);
 		sizer2->Add(nohaveText, 0, wxRIGHT, 8);

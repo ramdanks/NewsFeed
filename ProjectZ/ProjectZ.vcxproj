@@ -177,6 +177,7 @@
     <ClCompile Include="MD5.cpp" />
     <ClCompile Include="Profile.cpp" />
     <ClCompile Include="SystemBar.cpp" />
+    <ClCompile Include="Theme.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h" />
@@ -192,6 +193,7 @@
     <ClInclude Include="MD5.h" />
     <ClInclude Include="Profile.h" />
     <ClInclude Include="SystemBar.h" />
+    <ClInclude Include="Theme.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Resource.rc">

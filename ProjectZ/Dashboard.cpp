@@ -2,6 +2,7 @@
 #include "SystemBar.h"
 #include "Profile.h"
 #include "Image.h"
+#include "Theme.h"
 #include "Id.h"
 
 wxBEGIN_EVENT_TABLE(Dashboard, wxFrame)
@@ -19,35 +20,18 @@ Dashboard::Dashboard(wxWindow* parent)
 	Image::Fetch();
 	BuildGUI();
 	Center();
+	this->SetIcon(wxICON(ICO_LOGO));
 }
 
 void Dashboard::BuildGUI()
 {
-	const wxColour chatBack(20, 20, 20);
-	const wxColour chatFore(240, 240, 240);
-	const wxColour navBack(50, 50, 50);
-	const wxColour navFore(240, 240, 240);
-
-	auto SetTheme = [](wxWindow* wnd, const wxColour& back, const wxColour& fore)
-	{
-		wnd->SetBackgroundColour(back);
-		wnd->SetForegroundColour(fore);
-	};
-
 	auto* sysSizer = new wxBoxSizer(wxVERTICAL);
+	auto* sizer = new wxBoxSizer(wxHORIZONTAL);
+	auto* navSizer = new wxBoxSizer(wxVERTICAL);
 
 	auto* sysbar = new SystemBar(this);
-
-	auto* sizer = new wxBoxSizer(wxHORIZONTAL);
-
 	auto* chatPanel = new wxPanel(this);
 	auto* navPanel = new wxPanel(this);
-
-	SetTheme(chatPanel, chatBack, chatFore);
-	SetTheme(navPanel, navBack, navFore);
-	SetTheme(sysbar, navBack, navFore);
-
-	auto* navSizer = new wxBoxSizer(wxVERTICAL);
 
 	auto* searchSizer = new wxBoxSizer(wxHORIZONTAL);
 	auto* searchImg = new wxButton(navPanel, -1);
@@ -59,12 +43,11 @@ void Dashboard::BuildGUI()
 	searchSizer->Add(searchImg, 0, wxLEFT, 10);
 	searchSizer->Add(searchEntry, 0, wxEXPAND | wxRIGHT, 10);
 
+	navSizer->AddSpacer(10);
 	navSizer->Add(searchSizer);
 	navSizer->AddStretchSpacer();
-	navSizer->Add(profile);
+	navSizer->Add(profile, 0, wxEXPAND);
 	navPanel->SetSizer(navSizer);
-
-	//auto* logout = new wxButton(navPanel, ID_LOGOUT_BTN, "Log Out");
 
 	sizer->Add(navPanel, 0, wxEXPAND);
 	sizer->Add(chatPanel, 1, wxEXPAND);
@@ -74,6 +57,11 @@ void Dashboard::BuildGUI()
 
 	this->SetSizer(sysSizer);
 	sysSizer->SetSizeHints(this);
+
+	Theme::SetWindow(chatPanel, CLR_CHAT_BACK, CLR_CHAT_FORE);
+	Theme::SetWindow(navPanel, CLR_NAV_BACK, CLR_NAV_FORE);
+	Theme::SetWindow(sysbar, CLR_SYSBAR_BACK, CLR_SYSBAR_FORE);
+	Theme::SetWindow(searchEntry, CLR_ENTRY_BACK, CLR_ENTRY_FORE);
 }
 
 void Dashboard::OnClose(wxCloseEvent& event)
