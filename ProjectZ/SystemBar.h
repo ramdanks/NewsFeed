@@ -4,7 +4,7 @@
 class SystemBar : public wxPanel
 {
 public:
-	SystemBar(wxWindow* parent);
+	SystemBar(wxFrame* parent);
 	~SystemBar();
 
 private:
@@ -15,10 +15,16 @@ private:
     void OnMouseLRelease(wxMouseEvent& event);
     void OnMouseRClick(wxMouseEvent& event);
 
-    bool m_dragging;
-    int x, y;
-    
-    wxWindow* mParent;
+    void OnCloseBtn(wxCommandEvent& event);
+    void OnMaximizeBtn(wxCommandEvent& event);
+    void OnMinimizeBtn(wxCommandEvent& event);
 
+    void ChangeMaximizeMode();
+
+    bool m_dragging;
+    wxPoint m_pos;
+    
+    wxFrame* mParent;
+    wxBitmapButton* mClose, * mMaximize, * mMinimize;
     DECLARE_EVENT_TABLE();
 };

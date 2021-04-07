@@ -26,6 +26,7 @@ FrameMain::FrameMain(const wxString& title, const wxPoint& pos)
 {
 	PROFILE_SCOPE("Create Landing Page");
 	this->BuildGUI();
+	this->SetIcon(wxICON(ICO_LOGO));
 	if (!DBRequest::Init())
 	{
 		wxBusyInfo info("Warning: Cannot communicate with the database!");
@@ -77,9 +78,8 @@ void FrameMain::BuildGUI()
 	auto CreateHeader = [](wxWindow* wnd) -> wxSizer*
 	{
 		// set logo and title
-		wxBitmap bm("IMG_LOGO", wxBITMAP_TYPE_PNG_RESOURCE);
-		auto* myLogo = new wxStaticBitmap(wnd, wxID_ANY, bm);
-		auto* myName = new wxStaticText(wnd, wxID_ANY, "Elearning");
+		auto* myLogo = new wxStaticBitmap(wnd, wxID_ANY, wxBITMAP_PNG(IMG_LOGO));
+		auto* myName = new wxStaticText(wnd, wxID_ANY, "Newsfeed");
 		auto myFont = myName->GetFont();
 		myFont.SetPointSize(20);
 		myName->SetFont(myFont);

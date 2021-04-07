@@ -1,2 +1,7 @@
-IMG_LOGO RCDATA "asset\\logo.png"
+ICO_LOGO                ICON      "asset/icon.ico"
+IMG_LOGO                RCDATA    "asset/logo.png"
+IMG_MAXIMIZE            RCDATA    "asset/maximize.png"
+IMG_MAXIMIZE_RESTORE    RCDATA    "asset/restore.png"
+IMG_MINIMIZE            RCDATA    "asset/minimize.png"
+IMG_CLOSE               RCDATA    "asset/close.png"
 #include <wx/msw/wx.rc>

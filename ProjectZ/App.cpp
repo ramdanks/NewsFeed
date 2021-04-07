@@ -1,5 +1,6 @@
 #include "App.h"
 #include "Instrumentator.h"
+#include "Dashboard.h"
 
 wxIMPLEMENT_APP(App);
 
@@ -18,6 +19,9 @@ bool App::OnInit()
 
     mFrameMain = new FrameMain();
     mFrameMain->Show();
+
+    auto* dashboard = new Dashboard(nullptr);
+    dashboard->Show();
 
     PROFILE_END();
     return true;

@@ -13,7 +13,7 @@ class FrameMain : public wxFrame
 public:
 	enum LandingMode { LOGIN, SIGNUP };
 
-	FrameMain(const wxString& title = L"Main",
+	FrameMain(const wxString& title = L"Landing Page",
 			  const wxPoint& pos = wxDefaultPosition);
 
 	LandingMode GetMode() const;
