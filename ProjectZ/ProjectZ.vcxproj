@@ -173,6 +173,8 @@
     <ClCompile Include="DBRequest.cpp" />
     <ClCompile Include="Formatting.cpp" />
     <ClCompile Include="FrameMain.cpp" />
+    <ClCompile Include="FriendPanel.cpp" />
+    <ClCompile Include="FriendWindow.cpp" />
     <ClCompile Include="Image.cpp" />
     <ClCompile Include="MD5.cpp" />
     <ClCompile Include="Profile.cpp" />
@@ -186,6 +188,8 @@
     <ClInclude Include="DBRequest.h" />
     <ClInclude Include="Formatting.h" />
     <ClInclude Include="FrameMain.h" />
+    <ClInclude Include="FriendPanel.h" />
+    <ClInclude Include="FriendWindow.h" />
     <ClInclude Include="Id.h" />
     <ClInclude Include="Image.h" />
     <ClInclude Include="ImageId.h" />
