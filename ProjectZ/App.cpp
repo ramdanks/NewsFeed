@@ -17,6 +17,8 @@ bool App::OnInit()
 {
     PROFILE_BEGIN("App Init", "Profiling/Init.json");
 
+    wxInitAllImageHandlers();
+
     mFrameMain = new FrameMain();
     mFrameMain->Show();
 

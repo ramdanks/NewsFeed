@@ -14,4 +14,3 @@ private:
 
 	wxDECLARE_EVENT_TABLE();
 };
-

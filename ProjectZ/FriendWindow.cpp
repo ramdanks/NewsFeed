@@ -6,11 +6,12 @@ FriendWindow::FriendWindow(wxWindow* parent)
 	: wxScrolledWindow(parent, wxID_ANY)
 {
 	BuildGUI();
+	this->SetCursor(wxCURSOR_HAND);
 }
 
 void FriendWindow::BuildGUI()
 {
-	constexpr int height = 40;
+	constexpr int height = 50;
 	constexpr int width = 100;
 	constexpr int size = 30;
 
@@ -29,7 +30,6 @@ void FriendWindow::BuildGUI()
 	for (int i = 0; i < size; i++)
 	{
 		auto* pn = new FriendPanel(this, -1, wxPoint(0, i * height), wxSize(width, height));
-		new wxStaticText(pn, -1, "Unknown User");
 		sizer->Add(pn, 0, wxEXPAND);
 	}
 

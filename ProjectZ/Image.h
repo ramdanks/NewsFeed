@@ -8,7 +8,8 @@ class Image
 public:
 	Image() = delete;
 	static void Fetch();
-	static wxBitmap& GetImage(ImageId id);
+	static wxImage GetImage(ImageId id);
+	static wxImage GetImageScale(ImageId id, int w, int h);
 
 private:
 	static std::array<wxBitmap, ImageId::COUNT> sBitmap;

@@ -15,24 +15,13 @@ void Profile::BuildGUI()
 {
 	Theme::SetWindow(this, CLR_PROFILE_BACK, CLR_PROFILE_FORE);
 
-	wxBitmapButton* pp;
+	
 	auto* sizer0 = new wxBoxSizer(wxVERTICAL);
 	auto* sizer1 = new wxBoxSizer(wxVERTICAL);
 	auto* sizer = new wxBoxSizer(wxHORIZONTAL);
 
 	// load profile picture
-	auto bmp = Image::GetImage(PROFILE_IMG);
-	if (bmp.GetWidth() != PROFILE_PICTURE_WIDTH ||
-		bmp.GetHeight() != PROFILE_PICTURE_HEIGHT)
-	{
-		auto img = bmp.ConvertToImage();
-		img.Rescale(35, 35);
-		pp = new wxBitmapButton(this, -1, img);
-	}
-	else
-	{
-		pp = new wxBitmapButton(this, -1, bmp);
-	}
+	wxBitmapButton* pp = new wxBitmapButton(this, -1, Image::GetImageScale(PROFILE_IMG, 35, 35));
 
 	auto* name = new wxStaticText(this, -1, "myname");
 	auto* email = new wxStaticText(this, -1, "ramadhan.kalih@ui.ac.id");
