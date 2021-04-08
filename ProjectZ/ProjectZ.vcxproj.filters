@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Profile">
+      <UniqueIdentifier>{29eaf9ba-8214-464e-a226-f53fcbe04a41}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App.cpp">
@@ -39,7 +42,7 @@
     <ClCompile Include="SystemBar.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Profile.cpp">
+    <ClCompile Include="UserPanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Image.cpp">
@@ -48,11 +51,14 @@
     <ClCompile Include="Theme.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="FriendWindow.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="ProfilePanel.cpp">
+      <Filter>Profile</Filter>
     </ClCompile>
-    <ClCompile Include="FriendPanel.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="ProfileWindow.cpp">
+      <Filter>Profile</Filter>
+    </ClCompile>
+    <ClCompile Include="ProfileDialog.cpp">
+      <Filter>Profile</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -86,7 +92,7 @@
     <ClInclude Include="SystemBar.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Profile.h">
+    <ClInclude Include="UserPanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Image.h">
@@ -98,11 +104,17 @@
     <ClInclude Include="Theme.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="FriendWindow.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="ProfileWindow.h">
+      <Filter>Profile</Filter>
     </ClInclude>
-    <ClInclude Include="FriendPanel.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="ProfilePanel.h">
+      <Filter>Profile</Filter>
+    </ClInclude>
+    <ClInclude Include="ProfileDialog.h">
+      <Filter>Profile</Filter>
+    </ClInclude>
+    <ClInclude Include="Profile.h">
+      <Filter>Profile</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -1,9 +1,9 @@
 #include "Dashboard.h"
 #include "SystemBar.h"
-#include "Profile.h"
+#include "UserPanel.h"
 #include "Image.h"
 #include "Theme.h"
-#include "FriendWindow.h"
+#include "ProfileWindow.h"
 #include "Id.h"
 
 wxBEGIN_EVENT_TABLE(Dashboard, wxFrame)
@@ -34,8 +34,8 @@ void Dashboard::BuildGUI()
 	auto* searchEntry = new wxTextCtrl(navPanel, -1, wxEmptyString, wxPoint(0,0), wxSize(180,30), wxNO_BORDER);
 	searchEntry->SetHint("Search for messages in chats");
 
-	auto* profile = new Profile(navPanel);
-	auto* wndFriend = new FriendWindow(navPanel);
+	auto* userPanel = new UserPanel(navPanel);
+	auto* wndFriend = new ProfileWindow(navPanel);
 
 	searchSizer->Add(searchImg, 0, wxLEFT, 15);
 	searchSizer->Add(searchEntry, 1, wxEXPAND | wxRIGHT, 15);
@@ -44,7 +44,7 @@ void Dashboard::BuildGUI()
 	navSizer->Add(searchSizer, 0, wxEXPAND);
 	navSizer->AddSpacer(10);
 	navSizer->Add(wndFriend, 1, wxEXPAND);
-	navSizer->Add(profile, 0, wxEXPAND);
+	navSizer->Add(userPanel, 0, wxEXPAND);
 	navPanel->SetSizer(navSizer);
 
 	sizer->Add(navPanel, 0, wxEXPAND);

@@ -1,20 +1,19 @@
-#include "Profile.h"
+#include "UserPanel.h"
 #include "Image.h"
 #include "Theme.h"
 
-wxBEGIN_EVENT_TABLE(Profile, wxPanel)
+wxBEGIN_EVENT_TABLE(UserPanel, wxPanel)
 wxEND_EVENT_TABLE()
 
-Profile::Profile(wxWindow* parent)
+UserPanel::UserPanel(wxWindow* parent)
 	: wxPanel(parent)
 {
 	BuildGUI();
 }
 
-void Profile::BuildGUI()
+void UserPanel::BuildGUI()
 {
 	Theme::SetWindow(this, CLR_PROFILE_BACK, CLR_PROFILE_FORE);
-
 	
 	auto* sizer0 = new wxBoxSizer(wxVERTICAL);
 	auto* sizer1 = new wxBoxSizer(wxVERTICAL);
@@ -22,7 +21,7 @@ void Profile::BuildGUI()
 
 	// load profile picture
 	auto pict = Image::GetBitmap(PROFILE_IMG);
-	Image::SetBitmapScale(pict, 35, 35);
+	Image::SetBitmapScale(pict, USER_PICTURE_WIDTH, USER_PICTURE_HEIGHT);
 	wxBitmapButton* pp = new wxBitmapButton(this, -1, pict);
 
 	auto* name = new wxStaticText(this, -1, "myname");

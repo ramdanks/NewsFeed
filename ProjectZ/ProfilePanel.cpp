@@ -1,20 +1,21 @@
-#include "FriendPanel.h"
+#include "ProfilePanel.h"
+#include "ProfileDialog.h"
 #include "Image.h"
 #include "Theme.h"
 
-BEGIN_EVENT_TABLE(FriendPanel, wxPanel)
-EVT_MOTION(FriendPanel::OnMouseMove)
-EVT_LEFT_DOWN(FriendPanel::OnMouseLPress)
-EVT_LEFT_UP(FriendPanel::OnMouseLRelease)
-EVT_RIGHT_DOWN(FriendPanel::OnMouseRClick)
-EVT_LEAVE_WINDOW(FriendPanel::OnMouseLeave)
-EVT_ENTER_WINDOW(FriendPanel::OnMouseEnter)
+BEGIN_EVENT_TABLE(ProfilePanel, wxPanel)
+EVT_MOTION(ProfilePanel::OnMouseMove)
+EVT_LEFT_DOWN(ProfilePanel::OnMouseLPress)
+EVT_LEFT_UP(ProfilePanel::OnMouseLRelease)
+EVT_RIGHT_DOWN(ProfilePanel::OnMouseRClick)
+EVT_LEAVE_WINDOW(ProfilePanel::OnMouseLeave)
+EVT_ENTER_WINDOW(ProfilePanel::OnMouseEnter)
 END_EVENT_TABLE()
 
 #define PICTURE_WIDTH  30
 #define PICTURE_HEIGHT 30
 
-FriendPanel::FriendPanel(const sFriend& info, wxWindow* parent, const wxWindowID& id, const wxPoint& point, const wxSize& size)
+ProfilePanel::ProfilePanel(const sProfile& info, wxWindow* parent, const wxWindowID& id, const wxPoint& point, const wxSize& size)
 	: wxPanel(parent, id, point, size),
 	mInfo(info),
 	mFocus(false)
@@ -22,7 +23,7 @@ FriendPanel::FriendPanel(const sFriend& info, wxWindow* parent, const wxWindowID
 	BuildGUI();
 }
 
-void FriendPanel::SetInfo(const sFriend& info)
+void ProfilePanel::SetInfo(const sProfile& info)
 {
 	mInfo = info;
 	Image::SetBitmapScale(mInfo.picture, PICTURE_WIDTH, PICTURE_HEIGHT);
@@ -32,7 +33,7 @@ void FriendPanel::SetInfo(const sFriend& info)
 	mPicture->SetBitmap(mInfo.picture);
 }
 
-void FriendPanel::BuildGUI()
+void ProfilePanel::BuildGUI()
 {
 	Theme::SetWindow(this, CLR_FRIEND_IDLE_BACK, CLR_FRIEND_IDLE_FORE);	
 	Image::SetBitmapScale(mInfo.picture, PICTURE_WIDTH, PICTURE_HEIGHT);
@@ -56,11 +57,11 @@ void FriendPanel::BuildGUI()
 	this->SetSizer(sizer);
 }
 
-void FriendPanel::OnMouseMove(wxMouseEvent& event)
+void ProfilePanel::OnMouseMove(wxMouseEvent& event)
 {
 }
 
-void FriendPanel::OnMouseLPress(wxMouseEvent& event)
+void ProfilePanel::OnMouseLPress(wxMouseEvent& event)
 {
 	auto pos = event.GetPosition();
 	auto ppos = mPicture->GetPosition();
@@ -69,20 +70,20 @@ void FriendPanel::OnMouseLPress(wxMouseEvent& event)
 	if (pos.x >= ppos.x && pos.y >= ppos.y &&
 		pos.x <= ppos.x + psize.x && pos.y <= ppos.y + psize.y)
 	{
-		wxDialog d(this, -1, mInfo.bio);
-		if (d.ShowModal());
+		ProfileDialog d(mInfo, this);
+		d.ShowModal();
 	}
 }
 
-void FriendPanel::OnMouseLRelease(wxMouseEvent& event)
+void ProfilePanel::OnMouseLRelease(wxMouseEvent& event)
 {
 }
 
-void FriendPanel::OnMouseRClick(wxMouseEvent& event)
+void ProfilePanel::OnMouseRClick(wxMouseEvent& event)
 {
 }
 
-void FriendPanel::OnMouseEnter(wxMouseEvent& event)
+void ProfilePanel::OnMouseEnter(wxMouseEvent& event)
 {
 	CaptureMouse();
 	mFocus = true;
@@ -90,7 +91,7 @@ void FriendPanel::OnMouseEnter(wxMouseEvent& event)
 	this->Refresh();
 }
 
-void FriendPanel::OnMouseLeave(wxMouseEvent& event)
+void ProfilePanel::OnMouseLeave(wxMouseEvent& event)
 {
 	ReleaseMouse();
 	mFocus = false;

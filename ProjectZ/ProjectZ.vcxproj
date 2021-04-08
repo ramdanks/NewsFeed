@@ -173,11 +173,12 @@
     <ClCompile Include="DBRequest.cpp" />
     <ClCompile Include="Formatting.cpp" />
     <ClCompile Include="FrameMain.cpp" />
-    <ClCompile Include="FriendPanel.cpp" />
-    <ClCompile Include="FriendWindow.cpp" />
+    <ClCompile Include="ProfilePanel.cpp" />
+    <ClCompile Include="ProfileWindow.cpp" />
     <ClCompile Include="Image.cpp" />
     <ClCompile Include="MD5.cpp" />
-    <ClCompile Include="Profile.cpp" />
+    <ClCompile Include="UserPanel.cpp" />
+    <ClCompile Include="ProfileDialog.cpp" />
     <ClCompile Include="SystemBar.cpp" />
     <ClCompile Include="Theme.cpp" />
   </ItemGroup>
@@ -188,14 +189,16 @@
     <ClInclude Include="DBRequest.h" />
     <ClInclude Include="Formatting.h" />
     <ClInclude Include="FrameMain.h" />
-    <ClInclude Include="FriendPanel.h" />
-    <ClInclude Include="FriendWindow.h" />
+    <ClInclude Include="Profile.h" />
+    <ClInclude Include="ProfilePanel.h" />
+    <ClInclude Include="ProfileWindow.h" />
     <ClInclude Include="Id.h" />
     <ClInclude Include="Image.h" />
     <ClInclude Include="ImageId.h" />
     <ClInclude Include="Instrumentator.h" />
     <ClInclude Include="MD5.h" />
-    <ClInclude Include="Profile.h" />
+    <ClInclude Include="UserPanel.h" />
+    <ClInclude Include="ProfileDialog.h" />
     <ClInclude Include="SystemBar.h" />
     <ClInclude Include="Theme.h" />
   </ItemGroup>
