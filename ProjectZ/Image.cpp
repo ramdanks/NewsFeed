@@ -12,12 +12,22 @@ wxImage Image::GetImage(ImageId id)
     return sBitmap[id].ConvertToImage();
 }
 
-wxImage Image::GetImageScale(ImageId id, int w, int h)
+wxBitmap Image::GetBitmap(ImageId id)
 {
-    auto img = sBitmap[id].ConvertToImage();
-    if (img.GetWidth() != w || img.GetHeight() != h)
-        img.Rescale(35, 35);
-    return img;
+    return sBitmap[id];
+}
+
+void Image::SetBitmapScale(wxBitmap& bitmap, int w, int h)
+{
+    auto img = bitmap.ConvertToImage();
+    SetImageScale(img, w, h);
+    bitmap = wxBitmap(img);
+}
+
+void Image::SetImageScale(wxImage& image, int w, int h)
+{
+    if (image.GetWidth() != w || image.GetHeight() != h)
+        image.Rescale(35, 35);
 }
 
 wxBitmap Image::LoadImageFile(const wxString& filepath, wxBitmapType type)

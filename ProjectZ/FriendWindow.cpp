@@ -1,6 +1,7 @@
 #include "FriendWindow.h"
 #include "FriendPanel.h"
 #include "Theme.h"
+#include "Image.h"
 
 FriendWindow::FriendWindow(wxWindow* parent)
 	: wxScrolledWindow(parent, wxID_ANY)
@@ -29,11 +30,15 @@ void FriendWindow::BuildGUI()
 	
 	for (int i = 0; i < size; i++)
 	{
-		auto* pn = new FriendPanel(this, -1, wxPoint(0, i * height), wxSize(width, height));
+		sFriend info;
+		info.name = "Buzz Lightyear";
+		info.bio = "To Beyond and Infinity!";
+		info.picture = Image::GetBitmap(PROFILE_IMG);
+
+		auto* pn = new FriendPanel(info, this, -1, wxPoint(0, i * height), wxSize(width, height));
 		sizer->Add(pn, 0, wxEXPAND);
 	}
 
 	this->SetSizer(sizer);
 	sizer->SetSizeHints(this);
-
 }

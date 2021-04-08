@@ -21,7 +21,9 @@ void Profile::BuildGUI()
 	auto* sizer = new wxBoxSizer(wxHORIZONTAL);
 
 	// load profile picture
-	wxBitmapButton* pp = new wxBitmapButton(this, -1, Image::GetImageScale(PROFILE_IMG, 35, 35));
+	auto pict = Image::GetBitmap(PROFILE_IMG);
+	Image::SetBitmapScale(pict, 35, 35);
+	wxBitmapButton* pp = new wxBitmapButton(this, -1, pict);
 
 	auto* name = new wxStaticText(this, -1, "myname");
 	auto* email = new wxStaticText(this, -1, "ramadhan.kalih@ui.ac.id");

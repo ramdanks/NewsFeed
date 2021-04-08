@@ -1,5 +1,4 @@
 #include "FriendPanel.h"
-#include "wxImagePanel.h"
 #include "Image.h"
 #include "Theme.h"
 
@@ -12,8 +11,12 @@ EVT_LEAVE_WINDOW(FriendPanel::OnMouseLeave)
 EVT_ENTER_WINDOW(FriendPanel::OnMouseEnter)
 END_EVENT_TABLE()
 
-FriendPanel::FriendPanel(wxWindow* parent, const wxWindowID& id, const wxPoint& point, const wxSize& size)
+#define PICTURE_WIDTH  30
+#define PICTURE_HEIGHT 30
+
+FriendPanel::FriendPanel(const sFriend& info, wxWindow* parent, const wxWindowID& id, const wxPoint& point, const wxSize& size)
 	: wxPanel(parent, id, point, size),
+	mInfo(info),
 	mFocus(false)
 {
 	BuildGUI();
@@ -21,18 +24,25 @@ FriendPanel::FriendPanel(wxWindow* parent, const wxWindowID& id, const wxPoint& 
 
 void FriendPanel::SetInfo(const sFriend& info)
 {
+	mInfo = info;
+	Image::SetBitmapScale(mInfo.picture, PICTURE_WIDTH, PICTURE_HEIGHT);
+
+	mBio->SetLabel(mInfo.bio);
+	mName->SetLabel(mInfo.name);
+	mPicture->SetBitmap(mInfo.picture);
 }
 
 void FriendPanel::BuildGUI()
 {
 	Theme::SetWindow(this, CLR_FRIEND_IDLE_BACK, CLR_FRIEND_IDLE_FORE);	
+	Image::SetBitmapScale(mInfo.picture, PICTURE_WIDTH, PICTURE_HEIGHT);
 
 	auto* sizer = new wxBoxSizer(wxHORIZONTAL);
 
 	auto* sizerText = new wxBoxSizer(wxVERTICAL);
-	mPicture = new wxStaticBitmap(this, -1, wxBitmap(Image::GetImageScale(PROFILE_IMG, 30, 30)));
-	mName = new wxStaticText(this, -1, "Buzz Lightyear");
-	mBio = new wxStaticText(this, -1, "To Infinity and Beyond!");
+	mPicture = new wxStaticBitmap(this, -1, mInfo.picture);
+	mName = new wxStaticText(this, -1, mInfo.name);
+	mBio = new wxStaticText(this, -1, mInfo.bio);
 	mName->SetFont(FONT_FRIEND_NAME);
 	mBio->SetFont(FONT_FRIEND_BIO);
 	mBio->SetForegroundColour(CLR_FRIEND_BIO);
@@ -59,7 +69,7 @@ void FriendPanel::OnMouseLPress(wxMouseEvent& event)
 	if (pos.x >= ppos.x && pos.y >= ppos.y &&
 		pos.x <= ppos.x + psize.x && pos.y <= ppos.y + psize.y)
 	{
-		wxDialog d(this, -1, "Wow");
+		wxDialog d(this, -1, mInfo.bio);
 		if (d.ShowModal());
 	}
 }

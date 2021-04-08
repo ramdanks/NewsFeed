@@ -180,7 +180,6 @@
     <ClCompile Include="Profile.cpp" />
     <ClCompile Include="SystemBar.cpp" />
     <ClCompile Include="Theme.cpp" />
-    <ClCompile Include="wxImagePanel.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h" />
@@ -199,7 +198,6 @@
     <ClInclude Include="Profile.h" />
     <ClInclude Include="SystemBar.h" />
     <ClInclude Include="Theme.h" />
-    <ClInclude Include="wxImagePanel.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Resource.rc">
