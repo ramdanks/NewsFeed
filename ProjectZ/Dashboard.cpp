@@ -5,6 +5,8 @@
 #include "FeedTitle.h"
 #include "Theme.h"
 #include "ProfileWindow.h"
+#include "Feed.h"
+#include "FeedWindow.h"
 #include "Id.h"
 
 wxBEGIN_EVENT_TABLE(Dashboard, wxFrame)
@@ -39,7 +41,14 @@ void Dashboard::BuildGUI()
 	auto* userPanel = new UserPanel(navPanel);
 	auto* wndFriend = new ProfileWindow(navPanel);
 	FeedTitle::Init(cntPanel, wxSize(0,50), "All");
-	auto* feedContent = new wxPanel(cntPanel);
+	auto* wndFeed = new FeedWindow(cntPanel);
+
+	sFeed feed = {0, "Alert", "10/10/2020", "Hello apa kabar semuanya, Hello apa kabar semuanya!"};
+	for (int i = 0; i < 50; i++)
+	{
+		wndFeed->Add(feed);
+		feed.id++;
+	}
 
 	searchSizer->Add(searchImg, 0, wxLEFT, 15);
 	searchSizer->Add(searchEntry, 1, wxEXPAND | wxRIGHT, 15);
@@ -52,7 +61,7 @@ void Dashboard::BuildGUI()
 	navPanel->SetSizer(navSizer);
 
 	cntSizer->Add(FeedTitle::Get(), 0, wxEXPAND);
-	cntSizer->Add(feedContent, 1, wxEXPAND);
+	cntSizer->Add(wndFeed, 1, wxEXPAND);
 	cntPanel->SetSizer(cntSizer);
 
 	sizer->Add(navPanel, 0, wxEXPAND);
