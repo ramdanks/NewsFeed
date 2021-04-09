@@ -171,6 +171,7 @@
     <ClCompile Include="Dashboard.cpp" />
     <ClCompile Include="DatePicker.cpp" />
     <ClCompile Include="DBRequest.cpp" />
+    <ClCompile Include="FeedTitle.cpp" />
     <ClCompile Include="Formatting.cpp" />
     <ClCompile Include="FrameMain.cpp" />
     <ClCompile Include="ProfilePanel.cpp" />
@@ -187,6 +188,7 @@
     <ClInclude Include="Dashboard.h" />
     <ClInclude Include="DatePicker.h" />
     <ClInclude Include="DBRequest.h" />
+    <ClInclude Include="FeedTitle.h" />
     <ClInclude Include="Formatting.h" />
     <ClInclude Include="FrameMain.h" />
     <ClInclude Include="Profile.h" />

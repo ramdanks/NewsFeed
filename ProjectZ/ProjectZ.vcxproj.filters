@@ -60,6 +60,9 @@
     <ClCompile Include="ProfileDialog.cpp">
       <Filter>Profile</Filter>
     </ClCompile>
+    <ClCompile Include="FeedTitle.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FrameMain.h">
@@ -115,6 +118,9 @@
     </ClInclude>
     <ClInclude Include="Profile.h">
       <Filter>Profile</Filter>
+    </ClInclude>
+    <ClInclude Include="FeedTitle.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

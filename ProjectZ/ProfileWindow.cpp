@@ -17,8 +17,8 @@ void ProfileWindow::BuildGUI()
 	constexpr int width = 100;
 	constexpr int size = 30;
 
-	constexpr int scrollUnitX = width / 2;
-	constexpr int scrollUnitY = height / 2;
+	constexpr int scrollUnitX = width / 10;
+	constexpr int scrollUnitY = height / 10;
 
 	constexpr int scaleUnitX = width / scrollUnitX;
 	constexpr int scaleUnitY = size * height / scrollUnitY;

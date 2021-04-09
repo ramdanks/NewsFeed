@@ -19,6 +19,8 @@
 #define CLR_FRIEND_FOCUS_BACK     wxColour(60,60,60)
 #define CLR_FRIEND_FOCUS_FORE     wxColour(230,230,230)
 #define CLR_FRIEND_BIO            wxColour(180,180,180)
+#define CLR_CONTENT_TITLE_BACK    wxColour(25,25,25)
+#define CLR_CONTENT_TITLE_FORE    wxColour(240,240,240)
 
 #define FONT_PROFILE       wxFont(12, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false, "Roboto")
 #define FONT_FRIEND_NAME   wxFont(10, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false, "Arial")

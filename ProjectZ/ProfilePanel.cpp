@@ -2,6 +2,7 @@
 #include "ProfileDialog.h"
 #include "Image.h"
 #include "Theme.h"
+#include "FeedTitle.h"
 
 BEGIN_EVENT_TABLE(ProfilePanel, wxPanel)
 EVT_MOTION(ProfilePanel::OnMouseMove)
@@ -72,6 +73,10 @@ void ProfilePanel::OnMouseLPress(wxMouseEvent& event)
 	{
 		ProfileDialog d(mInfo, this);
 		d.ShowModal();
+	}
+	else
+	{
+		FeedTitle::SetTitle(mInfo.name);
 	}
 }
 
