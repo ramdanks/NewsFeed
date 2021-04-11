@@ -10,6 +10,7 @@ public:
 	FeedWindow(wxWindow* parent);
 
 	bool Add(const sFeed& feed);
+	bool Clear();
 	bool Remove(int id);
 	bool Remove(const sFeed& feed);
 	bool IsExist(int id);

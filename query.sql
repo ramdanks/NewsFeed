@@ -4,10 +4,11 @@ CREATE TABLE Account (
 	password CHAR(32) NOT NULL,
 	email CHAR(50) NOT NULL,
 	dob DATE NOT NULL,
-	displayname CHAR(50),
+	displayname CHAR(30),
 	bio CHAR(100),
 	createTime TIMESTAMP NOT NULL DEFAULT NOW()::TIMESTAMP
 );
+
 
 CREATE TABLE Follow (
 	id SERIAL PRIMARY KEY,
@@ -37,3 +38,20 @@ CREATE TABLE Billing (
 	buyer CHAR(20) NOT NULL REFERENCES Account (username),
 	logTime TIMESTAMP NOT NULL DEFAULT NOW()::TIMESTAMP,
 );
+
+INSERT INTO Follow(sender, receiver) VALUES('%s', '%s');
+DELETE FROM Follow WHERE sender='%s' AND receiver='%s';
+
+UPDATE Account SET bio='%s' WHERE username='%s';
+UPDATE Account SET displayname='%s' WHERE username='%s';
+
+SELECT id FROM Flag WHERE label='%s' AND owner='%s';
+SELECT label FROM Flag WHERE owner='%s';
+INSERT INTO Flag(label,owner) VALUES('%s','%s');
+DELETE FROM Flag WHERE label='%s' AND owner='%s';
+
+SELECT displayname, bio FROM Account WHERE username='%s';
+SELECT receiver FROM Follow WHERE sender='%s';
+
+INSERT INTO Feed(actor,text,fid) VALUES ('%s', '%s', '%u');
+SELECT * FROM Feed WHERE actor='%s';

@@ -3,6 +3,8 @@
 #include "Image.h"
 #include "Theme.h"
 #include "FeedTitle.h"
+#include "Dashboard.h"
+#include "Id.h"
 
 BEGIN_EVENT_TABLE(ProfilePanel, wxPanel)
 EVT_MOTION(ProfilePanel::OnMouseMove)
@@ -15,11 +17,13 @@ END_EVENT_TABLE()
 
 #define PICTURE_WIDTH  30
 #define PICTURE_HEIGHT 30
+#define BIO_CHAR_LIMIT 40
 
 ProfilePanel::ProfilePanel(const sProfile& info, wxWindow* parent, const wxWindowID& id, const wxPoint& point, const wxSize& size)
 	: wxPanel(parent, id, point, size),
 	mInfo(info),
-	mFocus(false)
+	mFocus(false),
+	mParent(parent)
 {
 	BuildGUI();
 }
@@ -44,7 +48,20 @@ void ProfilePanel::BuildGUI()
 	auto* sizerText = new wxBoxSizer(wxVERTICAL);
 	mPicture = new wxStaticBitmap(this, -1, mInfo.picture);
 	mName = new wxStaticText(this, -1, mInfo.displayname);
-	mBio = new wxStaticText(this, -1, mInfo.bio);
+
+
+	if (mInfo.bio.length() <= BIO_CHAR_LIMIT)
+		mBio = new wxStaticText(this, -1, mInfo.bio);
+	else
+	{
+		wxString str = mInfo.bio;
+		str.Truncate(BIO_CHAR_LIMIT);
+		for (int i = BIO_CHAR_LIMIT - 4; i < BIO_CHAR_LIMIT; i++)
+			str[i] = '\.';
+		str[BIO_CHAR_LIMIT-1] = '\0';
+		mBio = new wxStaticText(this, -1, str);
+	}
+
 	mName->SetFont(FONT_FRIEND_NAME);
 	mBio->SetFont(FONT_FRIEND_BIO);
 	mBio->SetForegroundColour(CLR_FRIEND_BIO);
@@ -71,12 +88,15 @@ void ProfilePanel::OnMouseLPress(wxMouseEvent& event)
 	if (pos.x >= ppos.x && pos.y >= ppos.y &&
 		pos.x <= ppos.x + psize.x && pos.y <= ppos.y + psize.y)
 	{
-		ProfileDialog d(mInfo, this);
-		d.ShowModal();
+		wxCommandEvent event(EVT_PP_IMG);
+		event.SetClientData(&mInfo);
+		wxPostEvent(mParent, event);
 	}
 	else
 	{
-		FeedTitle::SetTitle(mInfo.displayname);
+		wxCommandEvent event(EVT_PP_PRESS);
+		event.SetString(mInfo.username);
+		wxPostEvent(mParent, event);
 	}
 }
 

@@ -2,6 +2,8 @@
 #include "Id.h"
 #include "wx/regex.h"
 #include "Theme.h"
+#include "DBRequest.h"
+#include "UserPanel.h"
 
 BEGIN_EVENT_TABLE(FlagSetting, wxDialog)
 EVT_LISTBOX(ID_FLAG_LISTBOX, FlagSetting::OnListBox)
@@ -12,7 +14,15 @@ END_EVENT_TABLE()
 FlagSetting::FlagSetting(wxWindow* parent, const std::vector<wxString>& flags)
 	: wxDialog(parent, -1, "Flag Setting")
 {
-	BuildGUI(flags);
+	BuildGUI();
+	mListbox->Set(flags);
+}
+
+FlagSetting::FlagSetting(wxWindow* parent, const wxArrayString& flags)
+	: wxDialog(parent, -1, "Flag Setting")
+{
+	BuildGUI();
+	mListbox->Set(flags);
 }
 
 wxArrayString FlagSetting::GetFlagList()
@@ -31,7 +41,11 @@ void FlagSetting::OnAddFlags(wxCommandEvent& event)
 
 		if (!keyword.Matches(flag))
 			throw "Flags only use alphabet and digit character!";
-		
+
+		auto username = UserPanel::GetUser().username.ToStdString();
+		if (!DBRequest::AddFlag(flag.ToStdString(), username))
+			throw "Oops, cannot commit to database!";
+
 		mListbox->AppendString(flag);
 		mAddEntry->SetValue("");
 	}
@@ -43,11 +57,23 @@ void FlagSetting::OnAddFlags(wxCommandEvent& event)
 
 void FlagSetting::OnRemoveFlags(wxCommandEvent& event)
 {
-	auto index = mListbox->FindString(mRemoveEntry->GetValue(), true);
-	if (index != wxNOT_FOUND)
+	auto label = mRemoveEntry->GetValue();
+	auto index = mListbox->FindString(label, true);
+	try
 	{
+		if (index == wxNOT_FOUND)
+			throw "Entry doesn't match with list";
+
+		auto username = UserPanel::GetUser().username.ToStdString();
+		if (!DBRequest::RemoveFlag(label.ToStdString(), username))
+			throw "Oops, cannot commit to database!";
+
 		mListbox->Delete(index);
 		mRemoveEntry->SetValue("");
+	}
+	catch (const char* msg)
+	{
+		wxMessageBox(msg, "Invalid Flag", wxICON_ERROR);
 	}
 }
 
@@ -57,7 +83,7 @@ void FlagSetting::OnListBox(wxCommandEvent& event)
 	mRemoveEntry->SetLabel(lb->GetStringSelection());
 }
 
-void FlagSetting::BuildGUI(const std::vector<wxString>& flags)
+void FlagSetting::BuildGUI()
 {
 	Theme::SetWindow(this, CLR_LANDING_BACK, CLR_LANDING_FORE);
 
@@ -67,7 +93,6 @@ void FlagSetting::BuildGUI(const std::vector<wxString>& flags)
 
 	auto* listtext = new wxStaticText(this, -1, "Flag List:");
 	mListbox = new wxListBox(this, ID_FLAG_LISTBOX, wxDefaultPosition, wxSize(250,100));
-	mListbox->Set(flags);
 
 	Theme::SetWindow(mListbox, CLR_ENTRY_BACK, CLR_ENTRY_FORE);
 

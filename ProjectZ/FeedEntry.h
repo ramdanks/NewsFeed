@@ -1,12 +1,16 @@
 #pragma once
 #include "wx/wx.h"
 #include <wx/stc/stc.h>
-#include <unordered_map>
+
+wxDECLARE_EVENT(EVT_FE_POST, wxCommandEvent);
 
 class FeedEntry : public wxPanel
 {
 public:
 	FeedEntry(wxWindow* parent);
+
+	void SetFlag(const wxArrayString& flags);
+	void AddFlag(const wxString& flag);
 
 private:
 	void OnFlagBtn(wxCommandEvent& event);
@@ -17,5 +21,5 @@ private:
 
 	wxChoice* mCombo;
 	wxStyledTextCtrl* mSTC;
-	std::unordered_map<int, wxString> mFlags;
+	wxArrayString mFlags;
 };

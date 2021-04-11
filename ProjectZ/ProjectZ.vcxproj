@@ -186,6 +186,7 @@
     <ClCompile Include="ProfileDialog.cpp" />
     <ClCompile Include="SystemBar.cpp" />
     <ClCompile Include="Theme.cpp" />
+    <ClCompile Include="SettingDialog.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h" />
@@ -212,6 +213,7 @@
     <ClInclude Include="ProfileDialog.h" />
     <ClInclude Include="SystemBar.h" />
     <ClInclude Include="Theme.h" />
+    <ClInclude Include="SettingDialog.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Resource.rc">

@@ -78,6 +78,9 @@
     <ClCompile Include="FeedEntry.cpp">
       <Filter>Feed</Filter>
     </ClCompile>
+    <ClCompile Include="SettingDialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FrameMain.h">
@@ -151,6 +154,9 @@
     </ClInclude>
     <ClInclude Include="FeedEntry.h">
       <Filter>Feed</Filter>
+    </ClInclude>
+    <ClInclude Include="SettingDialog.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

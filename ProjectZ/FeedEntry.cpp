@@ -3,6 +3,8 @@
 #include "Image.h"
 #include "Id.h"
 #include "FlagSetting.h"
+#include "DBRequest.h"
+#include "UserPanel.h"
 
 BEGIN_EVENT_TABLE(FeedEntry, wxPanel)
 EVT_BUTTON(ID_FLAG_BTN, FeedEntry::OnFlagBtn)
@@ -15,17 +17,31 @@ FeedEntry::FeedEntry(wxWindow* parent)
 	BuildGUI();
 }
 
+void FeedEntry::SetFlag(const wxArrayString& flags)
+{
+	auto sel = mCombo->GetSelection();
+	if (sel == wxNOT_FOUND) sel = 0;
+	mCombo->Set(flags);
+	mFlags = flags;
+	mCombo->SetSelection(sel);
+}
+
+void FeedEntry::AddFlag(const wxString& flag)
+{
+	auto sel = mCombo->GetSelection();
+	if (sel == wxNOT_FOUND) sel = 0;
+	mCombo->Insert(flag, mCombo->GetCount());
+	mFlags.Add(flag);
+	mCombo->SetSelection(sel);
+}
+
 void FeedEntry::OnFlagBtn(wxCommandEvent& event)
 {
-	std::vector<wxString> flags;
-	flags.reserve(mFlags.size());
-	for (auto& i : mFlags)
-		flags.emplace_back(i.second);
-	FlagSetting f(this, flags);
+	FlagSetting f(this, mFlags);
 	f.ShowModal();
 
 	auto newlist = f.GetFlagList();
-	mCombo->Set(newlist);
+	SetFlag(newlist);
 }
 
 void FeedEntry::OnPostBtn(wxCommandEvent& event)
@@ -34,6 +50,24 @@ void FeedEntry::OnPostBtn(wxCommandEvent& event)
 	{
 		if (mCombo->GetSelection() == wxNOT_FOUND)
 			throw "Please select a flag!\nIf you don't have any, create one by cliking flag logo";
+
+		if (mSTC->IsEmpty())
+			throw "Please enter a message to post!";
+
+		auto text = mSTC->GetText();
+		auto actor = UserPanel::GetUser().username.ToStdString();
+		auto fid = DBRequest::GetFid(mCombo->GetStringSelection().ToStdString(), actor);
+
+		auto pair = DBRequest::PostFeed(actor, text.ToStdString(), fid);
+
+		if (pair.second.empty())
+			throw "Oops, cannot commit to the database!";
+
+		sFeed* f = new sFeed{pair.first, mCombo->GetStringSelection(), pair.second, text};
+		
+		wxCommandEvent event(EVT_FE_POST);
+		event.SetClientData(f);
+		wxPostEvent(GetParent(), event);
 	}
 	catch (const char* msg)
 	{
@@ -47,13 +81,6 @@ void FeedEntry::BuildGUI()
 	auto* cmdSizer = new wxBoxSizer(wxVERTICAL);
 	auto* flagSizer = new wxBoxSizer(wxHORIZONTAL);
 
-	mFlags[1] = "Libur";
-	mFlags[2] = "Beasiswa";
-	std::vector<wxString> flags;
-	flags.reserve(mFlags.size());
-	for (auto& i : mFlags)
-		flags.emplace_back(i.second);
-
 	auto* postBtn = new wxButton(this, ID_POST_BTN, "Post");
 	
 	auto img = Image::GetImage(FLAG_PNG);
@@ -61,7 +88,6 @@ void FeedEntry::BuildGUI()
 
 	auto* flagImg = new wxBitmapButton(this, ID_FLAG_BTN, wxBitmap(img));
 	mCombo = new wxChoice(this, -1, wxPoint(0,0), wxSize(120,0));
-	mCombo->Set(flags);
 	mCombo->SetSelection(0);
 
 	flagSizer->Add(flagImg);

@@ -301,7 +301,7 @@ void FrameMain::OnLoginBtn(wxCommandEvent& event)
 	
 	mLog.Warn->SetLabel("");
 	this->Hide();
-	auto* dashboard = new Dashboard(this);
+	auto* dashboard = new Dashboard(this, username);
 	dashboard->Show();
 }
 

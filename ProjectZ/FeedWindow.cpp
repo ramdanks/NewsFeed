@@ -19,6 +19,14 @@ bool FeedWindow::Add(const sFeed& feed)
     return true;
 }
 
+bool FeedWindow::Clear()
+{
+    if (mFeeds.empty())
+        return false;
+    mFeeds.clear();
+    mSizer->Clear(true);
+}
+
 bool FeedWindow::Remove(int id)
 {
     mFeeds.erase(id);

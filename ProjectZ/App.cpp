@@ -22,9 +22,6 @@ bool App::OnInit()
     mFrameMain = new FrameMain();
     mFrameMain->Show();
 
-    auto* dashboard = new Dashboard(nullptr);
-    dashboard->Show();
-
     PROFILE_END();
     return true;
 }

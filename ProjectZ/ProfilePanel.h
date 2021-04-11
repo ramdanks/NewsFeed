@@ -2,6 +2,9 @@
 #include <wx/wx.h>
 #include "Profile.h"
 
+wxDECLARE_EVENT(EVT_PP_IMG, wxCommandEvent);
+wxDECLARE_EVENT(EVT_PP_PRESS, wxCommandEvent);
+
 class ProfilePanel : public wxPanel
 {
 public:
@@ -20,6 +23,7 @@ private:
     void OnMouseLeave(wxMouseEvent& event);
 
     sProfile mInfo;
+    wxWindow* mParent;
     wxStaticText* mName;
     wxStaticText* mBio;
     wxStaticBitmap* mPicture;
