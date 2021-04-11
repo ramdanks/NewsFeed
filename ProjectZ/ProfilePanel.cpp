@@ -30,7 +30,7 @@ void ProfilePanel::SetInfo(const sProfile& info)
 	Image::SetBitmapScale(mInfo.picture, PICTURE_WIDTH, PICTURE_HEIGHT);
 
 	mBio->SetLabel(mInfo.bio);
-	mName->SetLabel(mInfo.name);
+	mName->SetLabel(mInfo.displayname);
 	mPicture->SetBitmap(mInfo.picture);
 }
 
@@ -43,7 +43,7 @@ void ProfilePanel::BuildGUI()
 
 	auto* sizerText = new wxBoxSizer(wxVERTICAL);
 	mPicture = new wxStaticBitmap(this, -1, mInfo.picture);
-	mName = new wxStaticText(this, -1, mInfo.name);
+	mName = new wxStaticText(this, -1, mInfo.displayname);
 	mBio = new wxStaticText(this, -1, mInfo.bio);
 	mName->SetFont(FONT_FRIEND_NAME);
 	mBio->SetFont(FONT_FRIEND_BIO);
@@ -76,7 +76,7 @@ void ProfilePanel::OnMouseLPress(wxMouseEvent& event)
 	}
 	else
 	{
-		FeedTitle::SetTitle(mInfo.name);
+		FeedTitle::SetTitle(mInfo.displayname);
 	}
 }
 

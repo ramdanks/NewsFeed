@@ -3,6 +3,6 @@
 
 struct sProfile
 {
-    wxString name, bio;
+    wxString username, displayname, bio;
     wxBitmap picture;
 };

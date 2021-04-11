@@ -44,8 +44,11 @@ void Dashboard::BuildGUI()
 	auto* wndFeed = new FeedWindow(cntPanel);
 
 	sFeed feed = {0, "Alert", "10/10/2020", "Hello apa kabar semuanya, Hello apa kabar semuanya!"};
+	sProfile profile = {"buzzlyear", "Buzz Lightyear", "To Infinity and Beyond!",
+						Image::GetBitmap(PROFILE_IMG)};
 	for (int i = 0; i < 50; i++)
 	{
+		wndFriend->Add(profile);
 		wndFeed->Add(feed);
 		feed.id++;
 	}

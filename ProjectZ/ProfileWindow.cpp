@@ -11,6 +11,40 @@ ProfileWindow::ProfileWindow(wxWindow* parent)
 	this->SetCursor(wxCURSOR_HAND);
 }
 
+bool ProfileWindow::Add(const sProfile& profile)
+{
+	if (IsExist(profile))
+		return false;
+	auto* profilep = new ProfilePanel(profile, this, -1, wxPoint(0, 0), wxSize(0, 50));
+	mProfiles[profile.username] = profile;
+	mSizer->Add(profilep, 0, wxEXPAND);
+	return true;
+}
+
+bool ProfileWindow::Remove(const sProfile& profile)
+{
+	mProfiles.erase(profile.username);
+	return true;
+}
+
+bool ProfileWindow::Remove(const wxString& username)
+{
+	mProfiles.erase(username);
+	return true;
+}
+
+bool ProfileWindow::IsExist(const sProfile& profile)
+{
+	auto it = mProfiles.find(profile.username);
+	return it != mProfiles.end();
+}
+
+bool ProfileWindow::IsExist(const wxString& username)
+{
+	auto it = mProfiles.find(username);
+	return it != mProfiles.end();
+}
+
 void ProfileWindow::BuildGUI()
 {
 	constexpr int height = 50;
@@ -27,19 +61,6 @@ void ProfileWindow::BuildGUI()
 				  scaleUnitX, scaleUnitY,
 				  0, 0);
 
-	auto* sizer = new wxBoxSizer(wxVERTICAL);
-	
-	for (int i = 0; i < size; i++)
-	{
-		sProfile info;
-		info.name = "Buzz Lightyear";
-		info.bio = "To Beyond and Infinity!";
-		info.picture = Image::GetBitmap(PROFILE_IMG);
-
-		auto* pn = new ProfilePanel(info, this, -1, wxPoint(0, i * height), wxSize(width, height));
-		sizer->Add(pn, 0, wxEXPAND);
-	}
-
-	this->SetSizer(sizer);
-	sizer->SetSizeHints(this);
+	mSizer = new wxBoxSizer(wxVERTICAL);
+	this->SetSizer(mSizer);
 }
