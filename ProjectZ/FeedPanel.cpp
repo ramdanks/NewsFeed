@@ -1,5 +1,6 @@
 #include "FeedPanel.h"
 #include "Theme.h"
+#include "Image.h"
 
 FeedPanel::FeedPanel(wxWindow* parent)
 	: wxPanel(parent)
@@ -44,10 +45,15 @@ void FeedPanel::BuildGUI(const sFeed& feed)
 	mHeader = new wxPanel(this, -1, wxPoint(0,0), wxSize(200, 30));
 	Theme::SetWindow(mHeader, CLR_FEED_HEADER_BACK, CLR_FEED_HEADER_FORE);
 
+	auto fimg = Image::GetImage(FLAG_PNG);
+	fimg.Rescale(15, 15);
+	auto* fBmp = new wxStaticBitmap(mHeader, -1, wxBitmap(fimg));
 	mFlag = new wxStaticText(mHeader, -1, feed.flag);
 	mDate = new wxStaticText(mHeader, -1, feed.date);
 
 	sizerH->AddSpacer(10);
+	sizerH->Add(fBmp, 0, wxCENTER);
+	sizerH->AddSpacer(5);
 	sizerH->Add(mFlag, 0, wxCENTER);
 	sizerH->AddStretchSpacer();
 	sizerH->Add(mDate, 0, wxCENTER);

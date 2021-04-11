@@ -5,6 +5,7 @@ std::array<wxBitmap, ImageId::COUNT> Image::sBitmap;
 void Image::Fetch()
 {
     sBitmap[PROFILE_IMG] = LoadImageFile("img/blank.png", wxBITMAP_TYPE_PNG);
+    sBitmap[FLAG_PNG] = LoadImageFile("img/flag.png", wxBITMAP_TYPE_PNG);
 }
 
 wxImage Image::GetImage(ImageId id)

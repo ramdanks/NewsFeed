@@ -7,6 +7,7 @@
 #include "ProfileWindow.h"
 #include "Feed.h"
 #include "FeedWindow.h"
+#include "FeedEntry.h"
 #include "Id.h"
 
 wxBEGIN_EVENT_TABLE(Dashboard, wxFrame)
@@ -43,6 +44,8 @@ void Dashboard::BuildGUI()
 	FeedTitle::Init(cntPanel, wxSize(0,50), "All");
 	auto* wndFeed = new FeedWindow(cntPanel);
 
+	auto* feedEntry = new FeedEntry(cntPanel);
+
 	sFeed feed = {0, "Alert", "10/10/2020", "Hello apa kabar semuanya, Hello apa kabar semuanya!"};
 	sProfile profile = {"buzzlyear", "Buzz Lightyear", "To Infinity and Beyond!",
 						Image::GetBitmap(PROFILE_IMG)};
@@ -65,6 +68,7 @@ void Dashboard::BuildGUI()
 
 	cntSizer->Add(FeedTitle::Get(), 0, wxEXPAND);
 	cntSizer->Add(wndFeed, 1, wxEXPAND);
+	cntSizer->Add(feedEntry, 0, wxEXPAND);
 	cntPanel->SetSizer(cntSizer);
 
 	sizer->Add(navPanel, 0, wxEXPAND);

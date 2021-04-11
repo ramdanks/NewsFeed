@@ -72,6 +72,12 @@
     <ClCompile Include="FeedPanel.cpp">
       <Filter>Feed</Filter>
     </ClCompile>
+    <ClCompile Include="FlagSetting.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FeedEntry.cpp">
+      <Filter>Feed</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FrameMain.h">
@@ -138,6 +144,12 @@
       <Filter>Feed</Filter>
     </ClInclude>
     <ClInclude Include="FeedPanel.h">
+      <Filter>Feed</Filter>
+    </ClInclude>
+    <ClInclude Include="FlagSetting.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FeedEntry.h">
       <Filter>Feed</Filter>
     </ClInclude>
   </ItemGroup>
